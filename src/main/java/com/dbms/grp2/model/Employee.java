@@ -11,21 +11,23 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "patients")
-public class Patient {
+@Table(name = "employees")
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "patient_id", nullable = false)
-    private Long patientId;
+    @Column(name = "employee_id", nullable = false)
+    private Long employeeId;
 
+    private String employeeType;
     private String firstName;
     private String lastName;
-    private String pincode;
-    private String state;
     private String city;
-    private String phoneNumber;
+    private String state;
+    private String pincode;
+    private String phoneNumbers;
     private String emailId;
-    private LocalDate dob;
-    private String sex;
+    private String hrType;
+    private LocalDate joiningDate;
+    private Long supervisorId;
 }
