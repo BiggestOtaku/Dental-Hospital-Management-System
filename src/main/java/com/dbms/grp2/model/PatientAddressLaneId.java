@@ -1,7 +1,6 @@
 package com.dbms.grp2.model;
 
 import lombok.*;
-
 import java.io.Serializable;
 
 @Getter

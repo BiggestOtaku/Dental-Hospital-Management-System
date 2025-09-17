@@ -1,6 +1,7 @@
 package com.dbms.grp2.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
@@ -14,7 +15,8 @@ import lombok.*;
 public class EmployeeAddressLane {
 
     @Id
-    @Column(name = "address_lane", nullable = false)
+    @Size(max = 255)
+    @Column(name = "address_lane", nullable = false, length = 255)
     private String addressLane;
 
     @Id
