@@ -55,7 +55,7 @@ public class Patient {
     @Column(name = "dob")
     private LocalDate dob;
 
-    @Enumerated(EnumType.STRING)
+    @Size(max = 10)
     @Column(name = "sex", length = 10)
-    private Sex sex;
+    private String sex;
 }
