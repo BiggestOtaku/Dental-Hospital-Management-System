@@ -20,9 +20,9 @@ public class Employee {
     @Column(name = "employee_id", nullable = false)
     private Long employeeId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "employee_type", length = 30)
-    private EmployeeType employeeType;
+    @Size(max = 50)
+    @Column(name = "employee_type", length = 50)
+    private String employeeType;
 
     @Size(max = 50)
     @Column(name = "first_name", length = 50)
@@ -60,9 +60,9 @@ public class Employee {
     @Column(name = "email_id", length = 254)
     private String emailId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "hr_type", length = 20)
-    private HrType hrType;
+    @Size(max = 50)
+    @Column(name = "hr_type", length = 50)
+    private String hrType;
 
     @Column(name = "joining_date")
     private LocalDate joiningDate;
@@ -70,7 +70,7 @@ public class Employee {
     @Column(name = "supervisor_id")
     private Long supervisorId;
 
-    @Enumerated(EnumType.STRING)
+    @Size(max = 10)
     @Column(name = "sex", length = 10)
-    private Sex sex;
+    private String sex;
 }
