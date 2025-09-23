@@ -1,19 +1,13 @@
 package com.dbms.grp2.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "camp_employees")
-@IdClass(CampEmployeeId.class) // Specifies the composite key class
+@IdClass(CampEmployeeId.class)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,11 +15,25 @@ import lombok.ToString;
 @ToString
 public class CampEmployee {
 
+    // ✅ PK fields as basic types
     @Id
-    @Column(name = "camp_id")
+    @Column(name = "camp_id", nullable = false)
     private Long campId;
 
     @Id
-    @Column(name = "emp_id")
-    private Long empId;
+    @Column(name = "emp_id", nullable = false)
+    private Long employeeId;
+
+    // ✅ Many-to-One associations
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "camp_id", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_campemployee_camp"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Camp camp;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "emp_id", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_campemployee_employee"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Employee employee;
 }

@@ -1,10 +1,6 @@
 package com.dbms.grp2.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -14,6 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class ImplantBusinessId implements Serializable {
-    private Long implantId; // Assuming implant ID is of type Long
-    private Long transactionId;
+
+    private Long implantId;      // must match entity PK field name
+    private Long transactionId;  // must match entity PK field name
 }

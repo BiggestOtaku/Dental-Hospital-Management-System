@@ -1,31 +1,32 @@
 package com.dbms.grp2.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "camp_addresses")
-@IdClass(CampAddressId.class) // Specifies the composite key class
+@IdClass(CampAddressId.class)
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class CampAddress {
 
     @Id
-    @Column(name = "camp_id")
+    @Column(name = "camp_id", nullable = false)
     private Long campId;
 
     @Id
-    @Column(name = "address_lane")
+    @Column(name = "address_lane", nullable = false)
     private String addressLane;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "camp_id", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_campaddress_camp"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Camp camp;
+
 }

@@ -15,6 +15,7 @@ import java.time.LocalDate;
         indexes = {@Index(name = "idx_patient_email", columnList = "email_id")})
 public class Patient {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "patient_id", nullable = false)

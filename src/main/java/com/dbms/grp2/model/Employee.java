@@ -3,6 +3,9 @@ package com.dbms.grp2.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.time.LocalDate;
 
 @Getter
@@ -60,15 +63,18 @@ public class Employee {
     @Column(name = "email_id", length = 254)
     private String emailId;
 
-    @Size(max = 50)
-    @Column(name = "hr_type", length = 50)
-    private String hrType;
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "hr_type", nullable = false, foreignKey = @ForeignKey(name = "fk_employee_hr"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private HumanResource humanResource;
 
     @Column(name = "joining_date")
     private LocalDate joiningDate;
 
-    @Column(name = "supervisor_id")
-    private Long supervisorId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supervisor_id", foreignKey = @ForeignKey(name = "fk_employee_supervisor"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Employee supervisor;
 
     @Size(max = 10)
     @Column(name = "sex", length = 10)

@@ -1,18 +1,16 @@
 package com.dbms.grp2.model;
 
-import jakarta.persistence.Embeddable;
 import lombok.*;
-
 import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @ToString
-@Embeddable
-@EqualsAndHashCode   // Important for PKs
 public class UsesID implements Serializable {
-    private Integer appointmentId;
-    private Integer implantId;
+
+    private Long appointmentId;  // must match entity PK field name
+    private Long implantId;      // must match entity PK field name
 }

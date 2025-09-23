@@ -1,37 +1,44 @@
 package com.dbms.grp2.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "implant_business")
-@IdClass(ImplantBusinessId.class) // Specifies the composite key class
+@IdClass(ImplantBusinessId.class)
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class ImplantBusiness {
 
+    // ✅ PK fields as basic types
     @Id
-    @Column(name = "implant_id")
+    @Column(name = "implant_id", nullable = false)
     private Long implantId;
 
     @Id
-    @Column(name = "transaction_id")
+    @Column(name = "transaction_id", nullable = false)
     private Long transactionId;
 
-    private int quantity;
+    // ✅ Many-to-One associations
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "implant_id", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_implantbusiness_implant"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Implant implant;
 
-    private String soldBy; // Assuming this is a String, like an employee name or ID
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "transaction_id", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_implantbusiness_transaction"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Transaction transaction;
 
-    private String broughtBy; // Assuming this is a String, like a patient name or ID
+    private Long quantity;
+
+    private String soldBy;    // can be Employee reference later if needed
+    private String broughtBy; // can be Patient reference later if needed
 }

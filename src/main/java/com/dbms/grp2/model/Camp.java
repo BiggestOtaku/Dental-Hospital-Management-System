@@ -1,20 +1,13 @@
 package com.dbms.grp2.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalDate; // Import this class
 
 @Entity
 @Table(name = "camps")
@@ -30,7 +23,9 @@ public class Camp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "camp_id")
     private Long campId;
+
     private LocalDate date;
+
     @Column(name = "start_time")
     private LocalDateTime startTime;
 
@@ -46,6 +41,9 @@ public class Camp {
 
     private int pin;
 
-    @Column(name = "transaction_id", nullable = false)
-    private int transactionId;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "transaction_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_camp_transaction"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Transaction transaction;
 }

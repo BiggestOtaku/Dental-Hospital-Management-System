@@ -19,17 +19,17 @@ public class Implant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="implant_id")
-    private Integer implantID;
+    private Long implantID;
 
     @Column(name="maximum_quantity")
-    private Integer maximumQuantity;
-    private Integer available;
+    private Long maximumQuantity;
+    private Long available;
     private Float price;
     private String type;
     private String size;
 
     @Column(name="expiry_period")
-    private Integer expiryPeriod;   // e.g., in months or years
+    private Long expiryPeriod;   // e.g., in months or years
     // expiryPeriod used instead of warrantyPeriod in Relational Schema
 
     @Column(name="sterilization_date")
