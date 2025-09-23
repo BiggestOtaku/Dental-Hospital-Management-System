@@ -8,10 +8,10 @@ public class PatientMapper {
 
     public static PatientResponseDto toPatientResponse(Patient patient) {
         PatientResponseDto dto = new PatientResponseDto();
-        dto.setId(patient.getId());
+        dto.setId(patient.getPatientId());
         dto.setFirstName(patient.getFirstName());
         dto.setLastName(patient.getLastName());
-        dto.setEmail(patient.getEmail());
+        dto.setEmail(patient.getEmailId());
         return dto;
     }
 
@@ -19,8 +19,8 @@ public class PatientMapper {
         Patient patient = new Patient();
         patient.setFirstName(dto.getFirstName());
         patient.setLastName(dto.getLastName());
-        patient.setEmail(dto.getEmail());
-        patient.setPassword(dto.getPassword()); // NOTE: still raw here — encode in service
+        patient.setEmailId(dto.getEmail());
+        patient.setPassword(dto.getPassword());
         return patient;
     }
 }
