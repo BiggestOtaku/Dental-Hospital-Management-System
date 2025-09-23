@@ -1,6 +1,7 @@
 package com.dbms.grp2.model;
 
 import lombok.*;
+
 import java.io.Serializable;
 
 @Getter
@@ -8,9 +9,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString
-public class UsesID implements Serializable {
+public class ImplantBusinessId implements Serializable {
 
-    private Long appointmentId;  // must match entity PK field name
     private Long implantId;      // must match entity PK field name
+    private Long transactionId;  // must match entity PK field name
 }

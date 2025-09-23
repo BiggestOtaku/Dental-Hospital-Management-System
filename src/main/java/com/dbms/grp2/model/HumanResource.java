@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name="human_resource")
+
 public class HumanResource {
     @Id
     private String hrType;
