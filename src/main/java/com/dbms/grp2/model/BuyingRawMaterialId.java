@@ -1,10 +1,6 @@
 package com.dbms.grp2.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -14,6 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class BuyingRawMaterialId implements Serializable {
-    private Long materialId; // Assuming material ID is of type Long
-    private Long transactionId;
+
+    private Long materialId;     // must match entity field name
+    private Long transactionId;  // must match entity field name
 }

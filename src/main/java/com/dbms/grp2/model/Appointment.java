@@ -3,6 +3,9 @@ package com.dbms.grp2.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -45,9 +48,13 @@ public class Appointment {
     @Column(name = "report")
     private String report;
 
-    @Column(name = "patient_id", nullable = false)
-    private Long patientId;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", nullable = false, foreignKey = @ForeignKey(name = "fk_appointment_patient"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Patient patient;
 
-    @Column(name = "employee_id", nullable = false)
-    private Long employeeId;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = false, foreignKey = @ForeignKey(name = "fk_appointment_employee"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Employee employee;
 }

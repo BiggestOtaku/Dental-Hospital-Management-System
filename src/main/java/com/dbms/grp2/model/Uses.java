@@ -1,23 +1,41 @@
 package com.dbms.grp2.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+@Entity
+@Table(name = "uses")
+@IdClass(UsesID.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "uses")
+@ToString
 public class Uses {
-    @EmbeddedId
-    private UsesID usesId;
+
+    // ✅ PK fields as basic types
+    @Id
+    @Column(name = "appointment_id", nullable = false)
+    private Long appointmentId;
+
+    @Id
+    @Column(name = "implant_id", nullable = false)
+    private Long implantId;
+
+    // ✅ Many-to-One associations
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "appointment_id", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_uses_appointment"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Appointment appointment;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "implant_id", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_uses_implant"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Implant implant;
 
     private Integer quantity;
 }

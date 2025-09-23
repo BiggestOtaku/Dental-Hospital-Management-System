@@ -1,21 +1,39 @@
 package com.dbms.grp2.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+@Entity
+@Table(name = "uses_material")
+@IdClass(UsesMaterialID.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "uses_material")
+@ToString
 public class UsesMaterial {
-    @EmbeddedId
-    private UsesMaterialID usesMaterialID;
+
+    // ✅ PK fields as basic types
+    @Id
+    @Column(name = "implant_id", nullable = false)
+    private Long implantId;
+
+    @Id
+    @Column(name = "material_id", nullable = false)
+    private Long materialId;
+
+    // ✅ Many-to-One associations
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "implant_id", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_usesmaterial_implant"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Implant implant;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "material_id", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_usesmaterial_rawmaterial"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private RawMaterial material;
 }

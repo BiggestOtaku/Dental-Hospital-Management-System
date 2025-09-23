@@ -28,6 +28,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
 
+
     private int amount;
 
     private LocalDate transactionDate;
