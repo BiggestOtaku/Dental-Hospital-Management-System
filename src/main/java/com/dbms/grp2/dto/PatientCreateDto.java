@@ -18,7 +18,7 @@ public class PatientCreateDto {
 
     @Email
     @NotBlank
-    private String email;
+    private String emailId;
 
     @NotBlank
     private String password;
