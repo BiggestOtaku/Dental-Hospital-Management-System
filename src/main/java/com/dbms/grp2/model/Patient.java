@@ -14,13 +14,11 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Entity
-@Table(name = "patients")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity
 @Table(name = "patients",
         indexes = {@Index(name = "idx_patient_email", columnList = "email_id")})
 public class Patient {
