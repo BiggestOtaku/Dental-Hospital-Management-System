@@ -5,6 +5,16 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.LocalDate;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
+@Entity
+@Table(name = "patients")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,6 +31,8 @@ public class Patient {
     @Column(name = "patient_id", nullable = false)
     private Long patientId;
 
+    @Column(name = "password", nullable = false)
+    private String password;
     @Size(max = 50)
     @Column(name = "first_name", length = 50)
     private String firstName;
