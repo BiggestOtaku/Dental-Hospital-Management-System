@@ -1,5 +1,6 @@
 package com.dbms.grp2.service.impl;
 
+import com.dbms.grp2.dto.LoginRequestDto;
 import com.dbms.grp2.dto.PatientCreateDto;
 import com.dbms.grp2.dto.PatientResponseDto;
 import com.dbms.grp2.model.Patient;
@@ -30,5 +31,18 @@ public class patientServiceImpl implements patientService {
         Patient patient = toEntity(dto);
         Patient saved = patientRepository.save(patient);
         return toPatientResponse(saved);
+    }
+
+    @Override
+    @Transactional
+    public PatientResponseDto getPatient(LoginRequestDto dto) {
+        Patient patient = patientRepository.findByEmailId(dto.getEmailId()).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found"));
+
+        if(dto.getPassword().equals(patient.getPassword())) {
+            return toPatientResponse(patient);
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
+        }
     }
 }
