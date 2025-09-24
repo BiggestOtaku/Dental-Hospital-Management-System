@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 import static com.dbms.grp2.mapper.PatientMapper.toEntity;
 import static com.dbms.grp2.mapper.PatientMapper.toPatientResponse;
 
@@ -31,4 +33,10 @@ public class patientServiceImpl implements patientService {
         Patient saved = patientRepository.save(patient);
         return toPatientResponse(saved);
     }
+
+    @Override
+    public Optional<Patient> findByEmail(String email) {
+        return patientRepository.findByEmailId(email);
+    }
+
 }
