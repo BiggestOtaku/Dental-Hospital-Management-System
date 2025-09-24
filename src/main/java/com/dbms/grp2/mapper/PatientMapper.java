@@ -19,7 +19,7 @@ public class PatientMapper {
         Patient patient = new Patient();
         patient.setFirstName(dto.getFirstName());
         patient.setLastName(dto.getLastName());
-        patient.setEmailId(dto.getEmail());
+        patient.setEmailId(dto.getEmailId());
         patient.setPassword(dto.getPassword());
         return patient;
     }

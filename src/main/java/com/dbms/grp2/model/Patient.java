@@ -43,7 +43,7 @@ public class Patient {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @Column(name = "pincode", nullable = false)
+    @Column(name = "pincode")
     private Integer pincode;
 
     @Size(max = 100)
