@@ -1,14 +1,162 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Home</title>
+
+    <style>
+        /* Embedded styles — no external file needed */
+        :root{
+          --bg-grad: linear-gradient(180deg,#f7fbff,#ffffff);
+          --brand-1: #2b71d9;
+          --brand-2: #36a2ff;
+          --muted: #6b6b6b;
+          --card-bg: #ffffff;
+          --shadow: 0 10px 30px rgba(8,25,60,0.06);
+          --radius: 12px;
+        }
+
+        /* Reset-ish */
+        *{ box-sizing: border-box; margin:0; padding:0; }
+        html,body{ height:100%; }
+        body{
+          font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+          background: var(--bg-grad);
+          color: #222;
+          -webkit-font-smoothing:antialiased;
+          -moz-osx-font-smoothing:grayscale;
+          padding: 28px 16px;
+          line-height: 1.45;
+        }
+
+        /* page container */
+        .page {
+          max-width: 980px;
+          margin: 18px auto;
+          padding: 22px;
+        }
+
+        /* header / brand */
+        header.site-brand {
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:16px;
+          margin-bottom:18px;
+        }
+        .brand {
+          display:flex;
+          align-items:center;
+          gap:12px;
+          text-decoration:none;
+          color: var(--brand-1);
+        }
+        .brand .logo {
+          width:52px;
+          height:52px;
+          border-radius:14px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:white;
+          font-weight:700;
+          font-size:18px;
+          background: linear-gradient(135deg,var(--brand-1),var(--brand-2));
+          box-shadow: 0 6px 18px rgba(43,113,217,0.12);
+        }
+        .brand h1{
+          font-size:18px;
+          letter-spacing:-0.2px;
+        }
+
+        /* content card */
+        .card {
+          background: var(--card-bg);
+          border-radius: var(--radius);
+          padding: 26px;
+          box-shadow: var(--shadow);
+        }
+
+        /* hero text */
+        h1 {
+          font-size:24px;
+          margin-bottom:8px;
+          color:var(--brand-1);
+        }
+        p {
+          margin-bottom:16px;
+          color:var(--muted);
+          font-size:15px;
+        }
+
+        /* styled links (buttons) */
+        .nav-links {
+          display:flex;
+          gap:10px;
+          flex-wrap:wrap;
+        }
+        .nav-links a {
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+          text-decoration:none;
+          padding:10px 14px;
+          border-radius:10px;
+          font-weight:700;
+          font-size:14px;
+          transition:transform .12s ease, box-shadow .12s ease;
+          border:1px solid transparent;
+          color: var(--brand-1);
+          background: transparent;
+        }
+        .nav-links a.primary {
+          color: #fff;
+          background: linear-gradient(90deg,var(--brand-1),var(--brand-2));
+          box-shadow: 0 10px 30px rgba(43,113,217,0.18);
+        }
+        .nav-links a:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(11,61,145,0.06);
+        }
+
+        /* utility */
+        .muted { color:var(--muted); font-size:13px; }
+        .center { text-align:center; }
+
+        /* table-like small screens helpers (if needed later) */
+        .kv { display:flex; gap:12px; align-items:center; }
+        .kv .k { font-weight:700; min-width:120px; color:#333; }
+        .kv .v { color:#444; }
+
+        /* responsiveness */
+        @media (max-width:700px){
+          .page{ padding:12px; }
+          .brand h1{ font-size:16px;}
+          h1{ font-size:20px; }
+          .nav-links a{ padding:9px 11px; font-size:13px; }
+        }
+    </style>
 </head>
 <body>
-<h1>Welcome!</h1>
+<div class="page">
+    <header class="site-brand">
+        <a class="brand" th:href="@{/}">
+            <span class="logo">DH</span>
+            <h1>Dental Clinic</h1>
+        </a>
+        <nav class="nav-links" aria-label="top navigation">
+            <a th:href="@{/register}" class="primary">Register</a>
+            <a th:href="@{/login}">Login</a>
+        </nav>
+    </header>
 
-<p>This is the home page.</p>
+    <main class="card" role="main">
+        <h1>Welcome!</h1>
+        <p>This is the home page.</p>
 
-<a th:href="@{/register}">Register</a> |
-<a th:href="@{/login}">Login</a>
+        <div class="muted">Use the buttons above to go to register or login.</div>
+    </main>
+</div>
 </body>
 </html>
