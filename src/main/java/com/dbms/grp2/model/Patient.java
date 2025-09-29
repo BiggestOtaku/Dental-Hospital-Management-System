@@ -44,7 +44,7 @@ public class Patient {
     private String lastName;
 
     @Column(name = "pincode")
-    private Integer pincode;
+    private Long pincode;
 
     @Size(max = 100)
     @Column(name = "state", length = 100)
