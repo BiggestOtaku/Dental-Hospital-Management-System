@@ -1,5 +1,6 @@
 package com.dbms.grp2.controller;
 
+import com.dbms.grp2.dto.LoginRequestDto;
 import com.dbms.grp2.dto.PatientCreateDto;
 import com.dbms.grp2.dto.PatientResponseDto;
 import com.dbms.grp2.service.patientService;
@@ -22,5 +23,11 @@ public class AuthController {
     public ResponseEntity<PatientResponseDto> createPatient(@Valid @RequestBody PatientCreateDto dto) {
         PatientResponseDto responseDto = patientService.createPatient(dto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<PatientResponseDto> getPatient(@RequestBody LoginRequestDto dto) {
+        PatientResponseDto responseDto = patientService.getPatient(dto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
