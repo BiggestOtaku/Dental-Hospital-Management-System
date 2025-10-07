@@ -23,14 +23,11 @@ import lombok.experimental.Accessors;
         indexes = {@Index(name = "idx_patient_email", columnList = "email_id")})
 public class Patient {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "patient_id", nullable = false)
     private Long patientId;
 
-    @Column(name = "password", nullable = false)
-    private String password;
     @Size(max = 50)
     @Column(name = "first_name", length = 50)
     private String firstName;
@@ -60,7 +57,7 @@ public class Patient {
 
     @Email
     @Size(max = 254)
-    @Column(name = "email_id", length = 254)
+    @Column(name = "email_id", length = 254, nullable = false)
     private String emailId;
 
     @Column(name = "dob")

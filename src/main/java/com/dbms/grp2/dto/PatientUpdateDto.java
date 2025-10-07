@@ -1,17 +1,15 @@
 package com.dbms.grp2.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientResponseDto {
-    private Long id;
+@Data
+public class PatientUpdateDto {
     private String firstName;
     private String lastName;
     private String emailId;
+    private String phoneNumber;
 }
