@@ -63,9 +63,10 @@ public class Employee {
     @Column(name = "email_id", length = 254)
     private String emailId;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "hr_type", nullable = false, foreignKey = @ForeignKey(name = "fk_employee_hr"))
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
     private HumanResource humanResource;
 
     @Column(name = "joining_date")
@@ -74,6 +75,7 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supervisor_id", foreignKey = @ForeignKey(name = "fk_employee_supervisor"))
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
     private Employee supervisor;
 
     @Size(max = 10)

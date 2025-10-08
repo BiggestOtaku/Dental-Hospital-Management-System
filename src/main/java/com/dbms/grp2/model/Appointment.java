@@ -16,6 +16,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @ToString
 @Entity
+@Builder
 @Table(name = "appointments")
 public class Appointment {
 
@@ -48,12 +49,12 @@ public class Appointment {
     @Column(name = "report")
     private String report;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "patient_id", nullable = false, foreignKey = @ForeignKey(name = "fk_appointment_patient"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Patient patient;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "employee_id", nullable = false, foreignKey = @ForeignKey(name = "fk_appointment_employee"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Employee employee;

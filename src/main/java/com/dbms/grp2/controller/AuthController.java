@@ -1,22 +1,28 @@
 package com.dbms.grp2.controller;
 
-import com.dbms.grp2.dto.LoginRequestDto;
-import com.dbms.grp2.dto.PatientCreateDto;
-import com.dbms.grp2.dto.PatientDto;
+import com.dbms.grp2.dto.*;
+import com.dbms.grp2.security.AuthService;
 import com.dbms.grp2.service.PatientService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthController {
 
-    private final PatientService patientService;
+    private final AuthService authService;
 
-    public AuthController(PatientService patientService) {
-        this.patientService = patientService;
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginRequestDto));
     }
 
+    @PostMapping("/signup")
+    public ResponseEntity<SignupResponseDto> signup(@Valid @RequestBody LoginRequestDto signUpRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.signup(signUpRequestDto));
+    }
 }
