@@ -10,3 +10,25 @@ VALUES
 ('Vikram', 'Raj', 'Chopra', 122001, 'Haryana', 'Gurgaon', '+919822334455', 'vikram.chopra@example.com', '1994-04-18', 'Male');
 
 
+INSERT INTO human_resource (hr_type, capacity) VALUES
+('Doctor', 50),
+('Nurse', 100),
+('Technician', 30),
+('Administrator', 10);
+
+INSERT INTO employees (
+    employee_type, first_name, middle_name, last_name, city, state,
+    pincode, dob, phone_numbers, email_id, hr_type,
+    joining_date, supervisor_id, sex
+) VALUES
+('Doctor', 'Amit', NULL, 'Sharma', 'Delhi', 'Delhi', '110001',
+ '1985-06-15', '+919812345678', 'amit.sharma@hospital.com', 'Doctor',
+ '2020-03-01', NULL, 'Male'),
+
+('Doctor', 'Priya', NULL, 'Menon', 'Bangalore', 'Karnataka', '560001',
+ '1990-09-10', '+919876543210', 'priya.menon@hospital.com', 'Doctor',
+ '2021-05-15', NULL, 'Female'),
+
+('Doctor', 'Ravi', 'Kumar', 'Patel', 'Ahmedabad', 'Gujarat', '380001',
+ '1982-12-05', '+919834567890', 'ravi.patel@hospital.com', 'Doctor',
+ '2019-11-20', NULL, 'Male');

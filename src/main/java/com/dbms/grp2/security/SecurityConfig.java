@@ -1,25 +1,62 @@
-//package com.dbms.grp2.security;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-//import org.springframework.security.web.SecurityFilterChain;
-//
-//@Configuration
-//@EnableWebSecurity
-//public class SecurityConfig {
-//
+package com.dbms.grp2.security;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final PasswordEncoder passwordEncoder;
+    private final JwtAuthFilter jwtAuthFilter;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .formLogin(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(sessionconfig ->
+                        sessionconfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // remember: context-path=/api, so matcher sees only "/patients/**"
+                        .requestMatchers("/public/**", "/error", "/auth/**").permitAll()
+                        .requestMatchers("/patients/**").hasAnyRole("ADMIN", "PATIENT")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/doctors/**").hasAnyRole("DOCTOR", "ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(AbstractHttpConfigurer::disable);
+
+        return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
 //    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(AbstractHttpConfigurer::disable) // disable CSRF for APIs
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/patients/**", "/error").permitAll()  // allow register & login
-//                        .anyRequest().authenticated()                // everything else requires auth
-//                );
-//
-//        return http.build();
-//    }
-//}
+    UserDetailsService userDetailsService() {
+        UserDetails user1 = User.withUsername("admin").password(passwordEncoder.encode("pass")).roles("ADMIN").build();
+        UserDetails user2 = User.withUsername("patient").password(passwordEncoder.encode("pass")).roles("PATIENT").build();
+
+        return new InMemoryUserDetailsManager(user1, user2);
+    }
+}

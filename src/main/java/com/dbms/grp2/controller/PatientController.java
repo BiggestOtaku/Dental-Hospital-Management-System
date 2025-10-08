@@ -3,11 +3,9 @@ package com.dbms.grp2.controller;
 import com.dbms.grp2.dto.PatientCreateDto;
 import com.dbms.grp2.dto.PatientDto;
 import com.dbms.grp2.dto.PatientUpdateDto;
-import com.dbms.grp2.model.Patient;
 import com.dbms.grp2.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
