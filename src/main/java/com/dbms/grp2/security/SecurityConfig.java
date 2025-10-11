@@ -29,16 +29,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .formLogin(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionconfig ->
                         sessionconfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // remember: context-path=/api, so matcher sees only "/patients/**"
                         .requestMatchers("/public/**", "/error", "/auth/**").permitAll()
-                        .requestMatchers("/patients/**").hasAnyRole("ADMIN", "PATIENT")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/doctors/**").hasAnyRole("DOCTOR", "ADMIN")
+//                        .requestMatchers("/patients/**").hasAnyRole("ADMIN", "PATIENT")
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/doctors/**").hasAnyRole("DOCTOR", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
