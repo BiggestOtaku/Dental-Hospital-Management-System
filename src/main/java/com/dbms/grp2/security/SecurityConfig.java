@@ -35,7 +35,7 @@ public class SecurityConfig {
                         sessionconfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // remember: context-path=/api, so matcher sees only "/patients/**"
-                        .requestMatchers("/public/**", "/error", "/auth/**").permitAll()
+                        .requestMatchers("/public/**", "/error", "/auth/**","/admin/**").permitAll()
                         .requestMatchers("/patients/**").hasAnyRole("ADMIN", "PATIENT")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/doctors/**").hasAnyRole("DOCTOR", "ADMIN")

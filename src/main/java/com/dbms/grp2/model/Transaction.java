@@ -19,8 +19,8 @@ import java.time.LocalDate;
 @Table(name = "transactions")
 @Getter
 @Setter
-@NoArgsConstructor // The required no-argument constructor
-@AllArgsConstructor // A constructor for all fields
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class Transaction {
 
@@ -33,7 +33,7 @@ public class Transaction {
 
     private LocalDate transactionDate;
 
-    @Enumerated(EnumType.STRING) // This is the key annotation
+    @Enumerated(EnumType.STRING)
     private expenseArea area;
 
     private String description;

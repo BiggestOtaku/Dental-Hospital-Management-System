@@ -39,6 +39,10 @@ public class Employee {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
+    @Size(max = 50)
+    @Column(name = "address_description", length = 50)
+    private String address_description;
+
     @Size(max = 100)
     @Column(name = "city", length = 100)
     private String city;
@@ -60,7 +64,7 @@ public class Employee {
 
     @Email
     @Size(max = 254)
-    @Column(name = "email_id", length = 254)
+    @Column(name = "email_id", length = 254, unique = true)
     private String emailId;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

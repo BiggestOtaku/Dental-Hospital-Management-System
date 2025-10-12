@@ -35,6 +35,8 @@ public class Camp {
     @Column(name = "attendee_count")
     private int attendeeCount;
 
+    private String addressDescription;
+
     private String city;
 
     private String state;

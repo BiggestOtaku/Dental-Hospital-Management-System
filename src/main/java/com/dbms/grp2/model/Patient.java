@@ -57,7 +57,7 @@ public class Patient {
 
     @Email
     @Size(max = 254)
-    @Column(name = "email_id", length = 254, nullable = false)
+    @Column(name = "email_id", length = 254, nullable = false,unique=true)
     private String emailId;
 
     @Column(name = "dob")
