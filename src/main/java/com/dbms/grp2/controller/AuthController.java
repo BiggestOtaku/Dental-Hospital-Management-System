@@ -21,8 +21,13 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginRequestDto));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<SignupResponseDto> signup(@Valid @RequestBody LoginRequestDto signUpRequestDto) {
-        return ResponseEntity.status(HttpStatus.OK).body(authService.signup(signUpRequestDto));
+    @PostMapping("/signup/patients")
+    public ResponseEntity<SignupResponseDto> signupPatient(@Valid @RequestBody LoginRequestDto signUpRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.signupPatient(signUpRequestDto));
+    }
+
+    @PostMapping("/signup/doctors")
+    public ResponseEntity<SignupResponseDto> signupDoctor(@Valid @RequestBody DoctorSignupRequestDto signUpRequestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.signupDoctor(signUpRequestDto));
     }
 }

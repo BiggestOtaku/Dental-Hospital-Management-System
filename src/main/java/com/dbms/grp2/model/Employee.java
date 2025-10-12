@@ -81,4 +81,8 @@ public class Employee {
     @Size(max = 10)
     @Column(name = "sex", length = 10)
     private String sex;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }
