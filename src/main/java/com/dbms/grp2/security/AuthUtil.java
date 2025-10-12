@@ -29,8 +29,8 @@ public class AuthUtil {
         claims.put("role", user.getRole().name());
 
         return Jwts.builder()
-                .setSubject(user.getUsername())
                 .setClaims(claims)
+                .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000*60*10))
                 .signWith(getSecretKey())
