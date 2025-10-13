@@ -15,4 +15,5 @@ public interface RawMaterialService {
     Page<RawMaterialDto> getAllRawMaterials(Pageable pageable);
     List<RawMaterialDto> getRawMaterialsByName(String materialName);
     Optional<RawMaterialDto> updateRawMaterialAvailability(Long materialId, UpdateRawMaterialAvailabilityDto updateDto);
+    List<RawMaterialDto> getRawMaterialsForImplant(Long implantId);
 }

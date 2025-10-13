@@ -55,5 +55,10 @@ public class AdminRawMaterialController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    @GetMapping("/get-raw-material-for-implant/{id}")
+    public ResponseEntity<List<RawMaterialDto>> getRawMaterialsForImplant(@PathVariable("id") Long implantId) {
+        List<RawMaterialDto> materials = rawMaterialService.getRawMaterialsForImplant(implantId);
+        return ResponseEntity.ok(materials);
+    }
 
 }

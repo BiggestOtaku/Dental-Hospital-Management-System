@@ -5,6 +5,7 @@ public enum expenseArea {
     SEMI_URBAN,
     RURAL,
     before_organising_camp,
-    after_expenses_of_camp_if_any
+    after_expenses_of_camp_if_any,
+    raw_material_buy
     // You can add more predefined values here
 }

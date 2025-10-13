@@ -6,6 +6,7 @@ import com.dbms.grp2.dto.UpdateRawMaterialAvailabilityDto;
 import com.dbms.grp2.model.RawMaterial;
 import com.dbms.grp2.repository.RawMaterialRepository;
 import com.dbms.grp2.service.RawMaterialService;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import com.dbms.grp2.repository.ImplantRepository;
 
 
 @Service
@@ -21,11 +23,13 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
     private final RawMaterialRepository rawMaterialRepository;
     private final ModelMapper modelMapper;
+    private final ImplantRepository implantRepository;
 
     @Autowired
-    public RawMaterialServiceImpl(RawMaterialRepository rawMaterialRepository, ModelMapper modelMapper) {
+    public RawMaterialServiceImpl(RawMaterialRepository rawMaterialRepository,ImplantRepository implantRepository, ModelMapper modelMapper) {
         this.rawMaterialRepository = rawMaterialRepository;
         this.modelMapper = modelMapper;
+        this.implantRepository=implantRepository;
     }
 
     @Override
@@ -61,6 +65,18 @@ public class RawMaterialServiceImpl implements RawMaterialService {
 
         RawMaterial updatedMaterial = rawMaterialRepository.save(existingMaterial);
         return Optional.of(modelMapper.map(updatedMaterial, RawMaterialDto.class));
+    }
+    @Override
+    public List<RawMaterialDto> getRawMaterialsForImplant(Long implantId) {
+        if (!implantRepository.existsById(implantId)) {
+            throw new EntityNotFoundException("Implant not found with ID: " + implantId);
+        }
+
+        List<RawMaterial> materials = rawMaterialRepository.findMaterialsByImplantId(implantId);
+
+        return materials.stream()
+                .map(material -> modelMapper.map(material, RawMaterialDto.class))
+                .collect(Collectors.toList());
     }
 
 }

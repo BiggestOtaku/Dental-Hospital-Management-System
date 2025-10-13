@@ -15,7 +15,6 @@ import org.hibernate.annotations.OnDeleteAction;
 @ToString
 public class UsesMaterial {
 
-    // ✅ PK fields as basic types
     @Id
     @Column(name = "implant_id", nullable = false)
     private Long implantId;
@@ -23,8 +22,6 @@ public class UsesMaterial {
     @Id
     @Column(name = "material_id", nullable = false)
     private Long materialId;
-
-    // ✅ Many-to-One associations
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "implant_id", insertable = false, updatable = false,
             foreignKey = @ForeignKey(name = "fk_usesmaterial_implant"))
