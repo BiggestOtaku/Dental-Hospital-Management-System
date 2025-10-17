@@ -1,5 +1,8 @@
 package com.dbms.grp2.service.impl;
 
+import com.dbms.grp2.dto.AppointmentDetailDto;
+import com.dbms.grp2.dto.AppointmentDto;
+import com.dbms.grp2.dto.UpdateAppointmentDto;
 import com.dbms.grp2.model.Appointment;
 import com.dbms.grp2.model.Employee;
 import com.dbms.grp2.model.Patient;
@@ -9,7 +12,12 @@ import com.dbms.grp2.repository.PatientRepository;
 import com.dbms.grp2.service.AppointmentService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,17 +26,103 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final PatientRepository patientRepository;
     private final EmployeeRepository employeeRepository;
+    private final ModelMapper modelMapper;
 
     @Transactional
     public Appointment createNewAppointment(Appointment appointment, Long doctorId, Long patientId) {
-        Employee doctor = employeeRepository.findById(doctorId).orElseThrow();
-        Patient patient = patientRepository.findById(patientId).orElseThrow();
+        Employee doctor = employeeRepository.findById(doctorId)
+                .orElseThrow(() -> new IllegalArgumentException("Doctor not found with ID: " + doctorId));
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new IllegalArgumentException("Patient not found with ID: " + patientId));
 
-        if(appointment.getAppointmentId() != null) throw new IllegalArgumentException("Appointment should not have an ID already");
+        if (appointment.getAppointmentId() != null) {
+            throw new IllegalArgumentException("New appointment should not have an ID.");
+        }
 
         appointment.setPatient(patient);
         appointment.setEmployee(doctor);
 
         return appointmentRepository.save(appointment);
+    }
+    @Override
+    public Page<AppointmentDto> getAllAppointments(Pageable pageable) {
+        Page<Appointment> appointmentsPage = appointmentRepository.findAll(pageable);
+        return appointmentsPage.map(this::convertToDto);
+    }
+    private AppointmentDto convertToDto(Appointment appointment) {
+        AppointmentDto dto = modelMapper.map(appointment, AppointmentDto.class);
+        if (appointment.getPatient() != null) {
+            dto.setPatientId(appointment.getPatient().getPatientId());
+        }
+        if (appointment.getEmployee() != null) {
+            dto.setEmployeeId(appointment.getEmployee().getEmployeeId());
+        }
+
+        return dto;
+    }
+    @Override
+    public Optional<AppointmentDto> updateAppointment(Long appointmentId, UpdateAppointmentDto updateDto) {
+
+        Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointmentId);
+
+        if (appointmentOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        Appointment existingAppointment = appointmentOptional.get();
+
+        if (updateDto.getStartTime() != null) {
+            existingAppointment.setStartTime(updateDto.getStartTime());
+        }
+        if (updateDto.getEndTime() != null) {
+            existingAppointment.setEndTime(updateDto.getEndTime());
+        }
+        if (updateDto.getDate() != null) {
+            existingAppointment.setDate(updateDto.getDate());
+        }
+        if (updateDto.getAmount() != null) {
+            existingAppointment.setAmount(updateDto.getAmount());
+        }
+        if (updateDto.getPaymentMode() != null) {
+            existingAppointment.setPaymentMode(updateDto.getPaymentMode());
+        }
+        if (updateDto.getStatus() != null) {
+            existingAppointment.setStatus(updateDto.getStatus());
+        }
+        if (updateDto.getReport() != null) {
+            existingAppointment.setReport(updateDto.getReport());
+        }
+        Appointment updatedAppointment = appointmentRepository.save(existingAppointment);
+        return Optional.of(convertToDto(updatedAppointment));
+    }
+    @Override
+    public Optional<AppointmentDetailDto> getAppointmentById(Long appointmentId) {
+
+        Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointmentId);
+
+        if (appointmentOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Appointment appointment = appointmentOptional.get();
+        AppointmentDetailDto dto = new AppointmentDetailDto();
+
+        dto.setAppointmentId(appointment.getAppointmentId());
+        dto.setStartTime(appointment.getStartTime());
+        dto.setEndTime(appointment.getEndTime());
+        dto.setDate(appointment.getDate());
+        dto.setAmount(appointment.getAmount());
+        dto.setPaymentMode(appointment.getPaymentMode());
+        dto.setStatus(appointment.getStatus());
+        dto.setReport(appointment.getReport());
+        if (appointment.getPatient() != null) {
+            dto.setPatientId(appointment.getPatient().getPatientId());
+            dto.setPatientEmailId(appointment.getPatient().getEmailId());
+        }
+        if (appointment.getEmployee() != null) {
+            dto.setEmployeeId(appointment.getEmployee().getEmployeeId());
+            dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
+        }
+
+        return Optional.of(dto);
     }
 }
