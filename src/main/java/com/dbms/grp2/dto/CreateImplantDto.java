@@ -1,6 +1,5 @@
-package com.dbms.grp2.model;
+package com.dbms.grp2.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,25 +11,13 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name="implant")
-public class Implant {
+public class CreateImplantDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="implant_id")
-    private Long implantID;
-
-    @Column(name="maximum_quantity")
     private Long maximumQuantity;
     private Long available;
     private Float price;
     private String type;
     private String size;
-
-    @Column(name="expiry_period")
     private Long expiryPeriod;
-
-    @Column(name="sterilization_date")
     private LocalDate sterilizationDate;
 }

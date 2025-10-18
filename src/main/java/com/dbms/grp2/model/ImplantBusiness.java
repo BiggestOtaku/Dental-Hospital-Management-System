@@ -15,7 +15,6 @@ import org.hibernate.annotations.OnDeleteAction;
 @ToString
 public class ImplantBusiness {
 
-    // ✅ PK fields as basic types
     @Id
     @Column(name = "implant_id", nullable = false)
     private Long implantId;
@@ -24,7 +23,6 @@ public class ImplantBusiness {
     @Column(name = "transaction_id", nullable = false)
     private Long transactionId;
 
-    // ✅ Many-to-One associations
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "implant_id", insertable = false, updatable = false,
             foreignKey = @ForeignKey(name = "fk_implantbusiness_implant"))
@@ -39,6 +37,6 @@ public class ImplantBusiness {
 
     private Long quantity;
 
-    private String soldBy;    // can be Employee reference later if needed
-    private String broughtBy; // can be Patient reference later if needed
+    private String soldBy;
+    private String broughtBy;
 }

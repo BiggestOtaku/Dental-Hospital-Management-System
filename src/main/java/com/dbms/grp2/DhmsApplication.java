@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @Configuration
-@EnableJpaAuditing // This configuration enables JPA auditing for automatic timestamping
+@EnableJpaAuditing
 public class DhmsApplication {
 
 	public static void main(String[] args) {
