@@ -27,15 +27,19 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;  // 👈 add this
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Spring expects roles as "ROLE_<name>"
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
+
     @Override
     public String getUsername() {
         return emailId;
     }
+
+    @Override
+    public String getPassword() { return password; }
 }
