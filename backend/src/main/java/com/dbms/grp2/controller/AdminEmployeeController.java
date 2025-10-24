@@ -4,6 +4,7 @@ import com.dbms.grp2.dto.CreateEmployeeRequestDto;
 import com.dbms.grp2.dto.EmployeeDto;
 import com.dbms.grp2.dto.UpdateEmployeeDto;
 import com.dbms.grp2.model.Employee;
+import com.dbms.grp2.security.AuthService;
 import com.dbms.grp2.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AdminEmployeeController {
 
     private final EmployeeService employeeService;
+    private final AuthService authService;
 
     @PostMapping("/add-employee")
-    public ResponseEntity<Employee> addEmployee(@Valid @RequestBody CreateEmployeeRequestDto employeeDto) {
-        Employee newEmployee = employeeService.addEmployee(employeeDto);
+    public ResponseEntity<EmployeeDto> addEmployee(@Valid @RequestBody CreateEmployeeRequestDto employeeDto) {
+        EmployeeDto newEmployee = employeeService.addEmployee(employeeDto);
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
+
     @DeleteMapping("/remove-employee/{id}")
     public ResponseEntity<Void> removeEmployee(@PathVariable Long id) {
         employeeService.removeEmployee(id);
@@ -50,4 +53,9 @@ public class AdminEmployeeController {
         return ResponseEntity.ok(employeeDto);
     }
 
+    @PostMapping("/promote/{id}")
+    public ResponseEntity<?> promoteEmployee(@PathVariable Long id) {
+        authService.promoteToAdmin(id);
+        return ResponseEntity.ok("User promoted to ADMIN");
+    }
 }

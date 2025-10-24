@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface EmployeeService {
 
-    Employee addEmployee(CreateEmployeeRequestDto employeeDto);
+    EmployeeDto addEmployee(CreateEmployeeRequestDto employeeDto);
     void removeEmployee(Long employeeId);
     Page<EmployeeDto> getAllEmployees(Pageable pageable);
     public EmployeeDto updateEmployee(Long employeeId, UpdateEmployeeDto employeeDto);

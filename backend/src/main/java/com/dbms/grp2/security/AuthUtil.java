@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class AuthUtil {
@@ -26,7 +27,10 @@ public class AuthUtil {
     public String createToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId().toString());
-        claims.put("role", user.getRole().name());
+        claims.put("roles", user.getRoles()
+                .stream()
+                .map(Enum::name)
+                .collect(Collectors.toList()));
 
         return Jwts.builder()
                 .setClaims(claims)

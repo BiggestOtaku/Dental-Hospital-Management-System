@@ -19,7 +19,6 @@ import java.time.LocalDate;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id", nullable = false)
     private Long employeeId;
 
@@ -87,6 +86,7 @@ public class Employee {
     private String sex;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @MapsId
+    @JoinColumn(name = "employee_id")
     private User user;
 }
