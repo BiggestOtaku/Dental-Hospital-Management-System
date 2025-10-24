@@ -69,6 +69,6 @@ public class Patient {
     private String sex;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @MapsId
     private User user;
 }

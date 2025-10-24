@@ -21,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,18 +46,21 @@ public class AuthService {
         User user = (User) authentication.getPrincipal();
         String token = authUtil.createToken(user);
 
-        return new LoginResponseDto(token, user.getId(), user.getRole().name());
+        return new LoginResponseDto(token, user.getId(), user.getRoles()
+                .stream()
+                .map(Enum::name)
+                .collect(Collectors.toList()));
     }
 
-    public SignupResponseDto signupPatient(@Valid LoginRequestDto signUpRequestDto) {
+    public SignupResponseDto signup(@Valid LoginRequestDto signUpRequestDto) {
         User user = userRepository.findByUsername(signUpRequestDto.getEmailId()).orElse(null);
 
-        if (user != null) throw new IllegalArgumentException("Patient already exists");
+        if (user != null) throw new IllegalArgumentException("User already exists");
 
         user = userRepository.save(User.builder()
                 .emailId(signUpRequestDto.getEmailId())
                 .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
-                .role(Role.PATIENT)
+                .roles(Set.of(Role.PATIENT))
                 .build());
 
         patientRepository.save(Patient.builder()
@@ -67,27 +72,35 @@ public class AuthService {
     }
 
     @Transactional
-    public SignupResponseDto signupDoctor(@Valid DoctorSignupRequestDto signUpRequestDto) {
-        Employee doctor = employeeRepository.findById(signUpRequestDto.getDoctorId())
-                .orElseThrow(()-> new IllegalArgumentException("Doctor not found in hospital database"));
+    public void promoteToAdmin(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        if(!Objects.equals(doctor.getEmailId(), signUpRequestDto.getEmailId())){
-            throw new IllegalArgumentException("Doctor ID and email ID do not match");
-        }
-
-//        if(doctor.getHumanResource() != "Doctor")
-
-        if(doctor.getUser() != null) {
-            throw new RuntimeException("Doctor already registered");
-        }
-
-        User user = userRepository.save(User.builder()
-                .emailId(signUpRequestDto.getEmailId())
-                .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
-                .role(Role.DOCTOR)
-                .build());
-
-        doctor.setUser(user);
-        return new SignupResponseDto(user.getId(), user.getEmailId());
+        user.getRoles().add(Role.ADMIN);
     }
+
+//    @Transactional
+//    public SignupResponseDto signupDoctor(@Valid DoctorSignupRequestDto signUpRequestDto) {
+//        Employee doctor = employeeRepository.findById(signUpRequestDto.getDoctorId())
+//                .orElseThrow(()-> new IllegalArgumentException("Doctor not found in hospital database"));
+//
+//        if(!Objects.equals(doctor.getEmailId(), signUpRequestDto.getEmailId())){
+//            throw new IllegalArgumentException("Doctor ID and email ID do not match");
+//        }
+//
+//        if(doctor.getHumanResource() != "Doctor")
+//
+//        if(doctor.getUser() != null) {
+//            throw new RuntimeException("Doctor already registered");
+//        }
+//
+//        User user = userRepository.save(User.builder()
+//                .emailId(signUpRequestDto.getEmailId())
+//                .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
+//                .roles(Set.of(Role.DOCTOR))
+//                .build());
+//
+//        doctor.setUser(user);
+//        return new SignupResponseDto(user.getId(), user.getEmailId());
+//    }
 }

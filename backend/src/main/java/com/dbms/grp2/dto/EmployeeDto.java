@@ -1,11 +1,14 @@
 package com.dbms.grp2.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeDto {
     private Long employeeId;
     private String employeeType;
