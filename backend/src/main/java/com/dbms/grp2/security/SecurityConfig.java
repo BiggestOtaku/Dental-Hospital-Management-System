@@ -1,5 +1,6 @@
 package com.dbms.grp2.security;
 
+import com.dbms.grp2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -26,12 +29,17 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final PasswordEncoder passwordEncoder;
-    private final JwtAuthFilter jwtAuthFilter;
     private final HandlerExceptionResolver handlerExceptionResolver;
+    private final UserRepository userRepository;
+    private final AuthUtil authUtil;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public JwtAuthFilter jwtAuthFilter() {
+        return new JwtAuthFilter(userRepository, authUtil, handlerExceptionResolver);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http
 //                .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
@@ -58,13 +66,5 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
-    }
-
-//    @Bean
-    UserDetailsService userDetailsService() {
-        UserDetails user1 = User.withUsername("admin").password(passwordEncoder.encode("pass")).roles("ADMIN").build();
-        UserDetails user2 = User.withUsername("patient").password(passwordEncoder.encode("pass")).roles("PATIENT").build();
-
-        return new InMemoryUserDetailsManager(user1, user2);
     }
 }
