@@ -9,6 +9,7 @@ import PatientsPage from './pages/PatientsPage';
 import NewPatientPage from './pages/NewPatientPage';
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
+import LogoutPage from './pages/LogoutPage';
 
 /**
  * Layout component used for all protected pages.
@@ -31,7 +32,7 @@ export default function App() {
       {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-
+      <Route path="/logout" element={<LogoutPage />} />
       {/* Protected routes: wrap the Layout with PrivateRoute so all children require auth */}
       <Route
         path="/"

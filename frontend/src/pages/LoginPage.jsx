@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
+  const [emailId, setEmailId] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -14,9 +14,7 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      // adjust field names if your backend expects different names
-      const res = await api.post('/auth/login', { username, password });
-      // example response expected: { token, userId, role, ... }
+      const res = await api.post('/auth/login', { emailId, password });
       const userData = res.data;
       login(userData);
       navigate('/'); // go to dashboard
@@ -33,11 +31,11 @@ export default function LoginPage() {
       <h3>Sign in</h3>
       <form onSubmit={submit}>
         <div className="mb-2">
-          <label>Username or Email</label>
+          <label>Email</label>
           <input
             className="form-control"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={emailId}
+            onChange={(e) => setEmailId(e.target.value)}
             required
             />
         </div>
