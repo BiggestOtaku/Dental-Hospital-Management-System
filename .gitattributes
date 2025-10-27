@@ -1,0 +1,20 @@
+# Set the default for all files to be handled automatically.
+# This fixes your warnings.
+* text=auto
+
+# --- Your rules (these are good overrides) ---
+
+# Force Unix-style LF endings for the mvnw shell script
+/mvnw text eol=lf
+
+# Force Windows-style CRLF endings for the cmd batch script
+*.cmd text eol=crlf
+
+# --- Rules for binary files ---
+# Tell Git not to touch these files at all
+
+*.jar binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.zip binary
