@@ -26,13 +26,6 @@ export default function PatientsPage() {
 
   return (
     <div className="container">
-      <div className="header-row">
-        <div className="header-title">Patients</div>
-        <div>
-          <Link to="/patients/new" className="btn btn-sm btn-primary">+ New patient</Link>
-        </div>
-      </div>
-
       <div className="card">
         {loading ? <div>Loading...</div> : (
           <div className="table-responsive">

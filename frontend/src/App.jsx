@@ -6,7 +6,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import Dashboard from './pages/Dashboard';
 import PatientsPage from './pages/PatientsPage';
-import NewPatientPage from './pages/NewPatientPage';
+import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
 import LogoutPage from './pages/LogoutPage';
@@ -47,7 +47,7 @@ export default function App() {
 
         {/* /patients and nested create */}
         <Route path="patients" element={<PatientsPage />} />
-        <Route path="patients/new" element={<NewPatientPage />} />
+        <Route path="patients/profile" element={<ProfilePage />} />
 
         {/* Add more protected routes here as you implement them */}
       </Route>
