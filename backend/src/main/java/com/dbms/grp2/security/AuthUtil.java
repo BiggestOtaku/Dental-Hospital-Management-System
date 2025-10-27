@@ -52,7 +52,7 @@ public class AuthUtil {
         return getClaimsFromToken(token).getSubject();
     }
 
-    public String getRoleFromToken(String token) {
-        return getClaimsFromToken(token).get("role").toString();
+    public java.util.List<String> getRolesFromToken(String token) {
+        return getClaimsFromToken(token).get("roles", java.util.List.class);
     }
 }
