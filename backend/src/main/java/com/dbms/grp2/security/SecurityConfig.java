@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionconfig ->
                         sessionconfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         // remember: context-path=/api, so matcher sees only "/patients/**"
                         .requestMatchers("/public/**", "/error", "/auth/**","/admin/**").permitAll()

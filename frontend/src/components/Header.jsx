@@ -22,7 +22,6 @@ export default function Header() {
 
           <nav style={{display:'flex', gap:8, alignItems:'center'}}>
             <Link to="/patients" className="btn btn-sm btn-outline-secondary">Patients</Link>
-            <Link to="/patients/new" className="btn btn-sm btn-outline-secondary">New Patient</Link>
           </nav>
         </div>
 
@@ -34,6 +33,11 @@ export default function Header() {
             <button className="btn btn-sm btn-outline-danger" onClick={handleLogout}>Logout</button>
           ) : (
             <Link to="/login" className="btn btn-sm btn-primary">Login</Link>
+          )}
+          {user ? (
+            <button className="btn btn-sm btn-outline-primary" onClick={() => navigate('patients/profile')}>Profile</button>
+          ) : (
+            <></>
           )}
         </div>
       </div>
