@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin("*")
 public class AdminAppointmentController {
 
     private final AppointmentService appointmentService;
