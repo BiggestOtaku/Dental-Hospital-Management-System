@@ -1,8 +1,10 @@
 package com.dbms.grp2.controller;
 
+import com.dbms.grp2.dto.ChangePasswordDto;
 import com.dbms.grp2.dto.PatientCreateDto;
 import com.dbms.grp2.dto.PatientDto;
 import com.dbms.grp2.dto.PatientUpdateDto;
+import com.dbms.grp2.security.AuthService;
 import com.dbms.grp2.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.List;
 public class PatientController {
 
     private final PatientService patientService;
+    private final AuthService authService;
 
     @GetMapping
     public ResponseEntity<List<PatientDto>> findAll(){
@@ -36,12 +39,18 @@ public class PatientController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePatientById(@PathVariable Long id){
-        patientService.deletePatientById(id);
+        authService.deleteUserById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PatientDto> updatePatientById(@PathVariable Long id, @RequestBody PatientUpdateDto dto){
         return ResponseEntity.status(HttpStatus.OK).body(patientService.updatePatientById(id, dto));
+    }
+
+    @PostMapping("/change-password/{id}")
+    public ResponseEntity<Void> changePasswordById(@PathVariable Long id, @RequestBody ChangePasswordDto dto){
+        authService.changePasswordById(id, dto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -1,9 +1,6 @@
 package com.dbms.grp2.security;
 
-import com.dbms.grp2.dto.DoctorSignupRequestDto;
-import com.dbms.grp2.dto.LoginRequestDto;
-import com.dbms.grp2.dto.LoginResponseDto;
-import com.dbms.grp2.dto.SignupResponseDto;
+import com.dbms.grp2.dto.*;
 import com.dbms.grp2.model.Employee;
 import com.dbms.grp2.model.Patient;
 import com.dbms.grp2.model.Role;
@@ -77,6 +74,27 @@ public class AuthService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         user.getRoles().add(Role.ADMIN);
+    }
+
+    public void deleteUserById(Long id) {
+        if(userRepository.findById(id).isEmpty()){
+            throw new IllegalArgumentException("Patient not found with ID: " + id);
+        }
+        userRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void changePasswordById(Long id, ChangePasswordDto dto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getEmailId(),
+                        dto.getOldPassword()
+                )
+        );
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
     }
 
 //    @Transactional
