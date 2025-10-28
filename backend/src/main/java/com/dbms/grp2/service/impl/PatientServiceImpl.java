@@ -39,14 +39,6 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void deletePatientById(Long id) {
-        if(patientRepository.findByPatientId(id).isEmpty()){
-            throw new IllegalArgumentException("Patient not found with ID: " + id);
-        }
-        patientRepository.deleteById(id);
-    }
-
-    @Override
     public PatientDto updatePatientById(Long patientId, PatientUpdateDto dto) {
         Patient patient = patientRepository.findByPatientId(patientId).orElseThrow(() -> new IllegalArgumentException("Patient not found with ID: " + patientId));
         modelMapper.map(dto, patient);

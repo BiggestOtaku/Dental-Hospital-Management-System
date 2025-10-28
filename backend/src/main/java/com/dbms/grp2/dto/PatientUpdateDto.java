@@ -10,6 +10,5 @@ import lombok.*;
 public class PatientUpdateDto {
     private String firstName;
     private String lastName;
-    private String emailId;
     private String phoneNumber;
 }

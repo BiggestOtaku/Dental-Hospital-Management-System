@@ -1,282 +1,174 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 
 export default function ProfilePage() {
-  const { user, token, logout } = useContext(AuthContext);
-  const [profile, setProfile] = useState(null);
+  const { user, logout } = useContext(AuthContext);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    emailId: '',
+    phoneNumber: '',
+  });
   const [editing, setEditing] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [message, setMessage] = useState('');
+  const [passwordData, setPasswordData] = useState({ oldPassword: '', newPassword: '' });
 
-  // password modal fields
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordMsg, setPasswordMsg] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!token) return;
-    fetchProfile();
-  }, [token]);
-
-  async function fetchProfile() {
-    try {
-      const res = await axios.get('http://localhost:8080/api/patients/me', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setProfile(res.data);
-    } catch (err) {
-      console.error(err);
+    // Fetch user profile details from API
+    async function fetchProfile() {
+      try {
+        const res = await api.get(`/patients/${user.userId}`); 
+        setFormData(res.data);
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+      }
     }
-  }
+    fetchProfile();
+  }, []);
 
   function handleChange(e) {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
-  async function handleSave() {
+  async function handleUpdate(e) {
+    e.preventDefault();
     try {
-      await axios.put('http://localhost:8080/api/patients/me', profile, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setMessage('✅ Profile updated successfully');
+      setLoading(true);
+      await api.put(`/patients/${user.userId}`, formData);
+      alert('Profile updated successfully!');
       setEditing(false);
     } catch (err) {
       console.error(err);
-      setMessage('❌ Failed to update profile');
+      alert('Failed to update profile');
+    } finally {
+      setLoading(false);
     }
   }
 
-  async function handleDelete() {
-    if (!window.confirm('Are you sure you want to delete your account?')) return;
+  async function handleChangePassword(e) {
+    e.preventDefault();
     try {
-      await axios.delete('http://localhost:8080/api/patients/me', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      setLoading(true);
+      await api.post(`/patients/change-password/${user.userId}`, passwordData);
+      alert('Password changed successfully!');
+      setShowPasswordModal(false);
+      setPasswordData({ oldPassword: '', newPassword: '' });
+    } catch (err) {
+      console.error(err);
+      alert('Error changing password');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDeleteAccount() {
+    if (!window.confirm('Are you sure you want to delete your account? This cannot be undone.')) return;
+    try {
+      await api.delete(`/patients/${user.userId}`);
       alert('Account deleted');
       logout();
-      window.location.href = '/login';
     } catch (err) {
       console.error(err);
       alert('Failed to delete account');
     }
   }
 
-  async function handleChangePassword() {
-    if (!oldPassword || !newPassword || !confirmPassword) {
-      setPasswordMsg('⚠️ All fields are required');
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setPasswordMsg('❌ New passwords do not match');
-      return;
-    }
-    try {
-      await axios.post(
-        'http://localhost:8080/api/users/change-password',
-        { oldPassword, newPassword },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setPasswordMsg('✅ Password changed successfully');
-      setTimeout(() => {
-        setShowPasswordModal(false);
-        setOldPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
-        setPasswordMsg('');
-      }, 1500);
-    } catch (err) {
-      console.error(err);
-      setPasswordMsg('❌ Failed to change password');
-    }
-  }
-
-  if (!profile) return <div>Loading profile...</div>;
-
   return (
-    <div className="container mt-4" style={{ maxWidth: '600px' }}>
-      <h3 className="mb-3">My Profile</h3>
+    <div className="container mt-4" style={{ maxWidth: 600 }}>
+      <h3>My Profile</h3>
+      <hr />
 
-      {message && (
-        <div
-          style={{
-            color: message.startsWith('✅') ? 'green' : 'red',
-            marginBottom: '8px',
-          }}
-        >
-          {message}
+      {!editing ? (
+        <div>
+          <p><strong>First Name:</strong> {formData.firstName}</p>
+          <p><strong>Last Name:</strong> {formData.lastName}</p>
+          <p><strong>Email:</strong> {formData.emailId}</p>
+          <p><strong>Phone:</strong> {formData.phoneNumber}</p>
+
+          <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+            <button className="btn btn-primary btn-sm" onClick={() => setEditing(true)}>Edit</button>
+            <button className="btn btn-outline-secondary btn-sm" onClick={() => setShowPasswordModal(true)}>
+              Change Password
+            </button>
+            <button className="btn btn-outline-danger btn-sm" onClick={handleDeleteAccount}>
+              Delete Account
+            </button>
+          </div>
         </div>
+      ) : (
+        <form onSubmit={handleUpdate}>
+          <div className="mb-3">
+            <label className="form-label">First Name</label>
+            <input type="text" className="form-control" name="firstName" value={formData.firstName} onChange={handleChange} required />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Last Name</label>
+            <input type="text" className="form-control" name="lastName" value={formData.lastName} onChange={handleChange} required />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input type="email" className="form-control" name="emailId" value={formData.emailId} disabled />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Phone</label>
+            <input type="text" className="form-control" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+          </div>
+
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="btn btn-success btn-sm" type="submit" disabled={loading}>Save</button>
+            <button className="btn btn-outline-secondary btn-sm" onClick={() => setEditing(false)} type="button">Cancel</button>
+          </div>
+        </form>
       )}
 
-      <div className="card p-3 shadow-sm rounded-3">
-        <div className="mb-2">
-          <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            value={profile.name || ''}
-            onChange={handleChange}
-            disabled={!editing}
-            className="form-control"
-          />
-        </div>
-
-        <div className="mb-2">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={profile.email || ''}
-            onChange={handleChange}
-            disabled={!editing}
-            className="form-control"
-          />
-        </div>
-
-        <div className="mb-2">
-          <label>Address</label>
-          <input
-            type="text"
-            name="address"
-            value={profile.address || ''}
-            onChange={handleChange}
-            disabled={!editing}
-            className="form-control"
-          />
-        </div>
-
-        <div className="mb-3">
-          <label>Phone</label>
-          <input
-            type="text"
-            name="phone"
-            value={profile.phone || ''}
-            onChange={handleChange}
-            disabled={!editing}
-            className="form-control"
-          />
-        </div>
-
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-          {editing ? (
-            <>
-              <button className="btn btn-success btn-sm" onClick={handleSave}>
-                Save
-              </button>
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() => setEditing(false)}
-              >
-                Cancel
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                className="btn btn-outline-primary btn-sm"
-                onClick={() => setEditing(true)}
-              >
-                Edit
-              </button>
-              <button
-                className="btn btn-outline-warning btn-sm"
-                onClick={() => setShowPasswordModal(true)}
-              >
-                Change Password
-              </button>
-              <button
-                className="btn btn-outline-danger btn-sm"
-                onClick={handleDelete}
-              >
-                Delete Account
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* ================= PASSWORD CHANGE POPUP ================= */}
+      {/* 🔐 Password Change Modal */}
       {showPasswordModal && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            background: 'rgba(0,0,0,0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-          }}
-        >
-          <div
-            className="card p-4 shadow"
-            style={{
-              background: '#fff',
-              borderRadius: 12,
-              minWidth: 350,
-              maxWidth: '90%',
-            }}
-          >
-            <h5 className="mb-3">Change Password</h5>
-            {passwordMsg && (
-              <div
-                style={{
-                  color: passwordMsg.startsWith('✅') ? 'green' : 'red',
-                  marginBottom: '8px',
-                }}
-              >
-                {passwordMsg}
+        <div className="modal-backdrop" style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.5)', display: 'flex',
+          justifyContent: 'center', alignItems: 'center'
+        }}>
+          <div className="card p-3" style={{ width: 350 }}>
+            <h5>Change Password</h5>
+            <form onSubmit={handleChangePassword}>
+              <div className="mb-2">
+                <label className="form-label">Old Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  value={passwordData.oldPassword}
+                  onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })}
+                  required
+                />
               </div>
-            )}
-            <div className="mb-2">
-              <label>Old Password</label>
-              <input
-                type="password"
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-                className="form-control"
-              />
-            </div>
-            <div className="mb-2">
-              <label>New Password</label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="form-control"
-              />
-            </div>
-            <div className="mb-3">
-              <label>Confirm Password</label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="form-control"
-              />
-            </div>
+              <div className="mb-2">
+                <label className="form-label">New Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  value={passwordData.newPassword}
+                  onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                  required
+                />
+              </div>
 
-            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() => {
-                  setShowPasswordModal(false);
-                  setPasswordMsg('');
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                className="btn btn-primary btn-sm"
-                onClick={handleChangePassword}
-              >
-                Change
-              </button>
-            </div>
+              <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                <button className="btn btn-primary btn-sm" type="submit" disabled={loading}>Update</button>
+                <button
+                  className="btn btn-outline-secondary btn-sm"
+                  type="button"
+                  onClick={() => setShowPasswordModal(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

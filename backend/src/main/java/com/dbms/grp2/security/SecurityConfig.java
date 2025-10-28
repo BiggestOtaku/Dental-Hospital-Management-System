@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         // remember: context-path=/api, so matcher sees only "/patients/**"
-                        .requestMatchers("/public/**", "/error", "/auth/**","/admin/**").permitAll()
+                        .requestMatchers("/public/**", "/error", "/auth/**").permitAll()
                         .requestMatchers("/patients/**").hasAnyRole("ADMIN", "PATIENT")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/doctors/**").hasAnyRole("DOCTOR", "ADMIN")
