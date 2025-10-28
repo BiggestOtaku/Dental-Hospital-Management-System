@@ -9,6 +9,7 @@ import PatientsPage from './pages/PatientsPage';
 import NewPatientPage from './pages/NewPatientPage';
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
+import LogoutPage from './pages/LogoutPage';
 import RoleRoute from './components/RoleRoute';
 import DoctorAppointments from './pages/DoctorAppointments';
 import DoctorRecords from './pages/DoctorRecords';
@@ -36,7 +37,7 @@ export default function App() {
       {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-
+      <Route path="/logout" element={<LogoutPage />} />
       {/* Protected routes: wrap the Layout with PrivateRoute so all children require auth */}
       {/* Doctor routes - restrict to role DOCTOR */}
       <Route path="doctor/appointments" element={
@@ -74,7 +75,7 @@ export default function App() {
 
         {/* /patients and nested create */}
         <Route path="patients" element={<PatientsPage />} />
-        <Route path="patients/new" element={<NewPatientPage />} />
+        <Route path="patients/profile" element={<ProfilePage />} />
 
         {/* Add more protected routes here as you implement them */}
       </Route>
