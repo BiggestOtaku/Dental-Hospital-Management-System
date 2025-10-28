@@ -76,16 +76,15 @@ export default function AdminTransactionsPage() {
     return (
         <div className="container">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <h2>All Transactions</h2>
-                    <div>
-                        <Link to="/admin/transactions/add" className="btn btn-primary me-2">
-                            + Add Transaction
-                        </Link>
-                        <Link to="/admin" className="btn btn-secondary">&larr; Back to Admin</Link>
-                    </div>
+                <h2>All Transactions</h2>
+                <div>
+                    <Link to="/admin/transactions/add" className="btn btn-primary me-2">
+                        + Add Transaction
+                    </Link>
+                    <Link to="/admin" className="btn btn-secondary">&larr; Back to Admin</Link>
                 </div>
             </div>
+
 
 
             <table className="table table-striped table-hover">

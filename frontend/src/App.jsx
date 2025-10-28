@@ -15,6 +15,14 @@ import AppointmentDetailPage from './pages/AppointmentDetailPage';
 import AdminTransactionsPage from './pages/AdminTransactionsPage.jsx';
 import AddTransactionPage from './pages/AddTransactionPage.jsx';
 import TransactionDetailPage from './pages/TransactionDetailPage';
+import AdminCampsPage from './pages/AdminCampsPage.jsx';
+import CampDetailPage from './pages/CampDetailPage.jsx';
+import AddCampPage from './pages/AddCampPage.jsx';  
+import EditAppointmentPage from './pages/EditAppointmentPage.jsx';
+import AdminImplantsPage from './pages/AdminImplantsPage.jsx';
+import AddImplantPage from './pages/AddImplantPage.jsx';
+import ImplantDetailPage from './pages/ImplantDetailPage.jsx';
+import EditImplantPage from './pages/EditImplantPage.jsx';
 /**
  * Layout component used for all protected pages.
  * Header is shown and the page content is rendered inside .container
@@ -54,10 +62,17 @@ export default function App() {
       
         <Route path="admin/appointments" element={<ViewAppointmentsPage />} />
         <Route path="admin/appointments/:id" element={<AppointmentDetailPage />} />
-
         <Route path="admin/transactions" element={<AdminTransactionsPage />} />
         <Route path="admin/transactions/add" element={<AddTransactionPage />} />
         <Route path="admin/transactions/:id" element={<TransactionDetailPage />} />
+        <Route path="admin/camps" element={<AdminCampsPage />} />
+        <Route path="admin/camps/:id" element={<CampDetailPage />} />
+        <Route path="admin/camps/add" element={<AddCampPage />} />
+        <Route path="admin/appointments/edit/:id" element={<EditAppointmentPage />} />
+        <Route path="admin/implants" element={<AdminImplantsPage />} />
+        <Route path="admin/implants/add" element={<AddImplantPage />} />
+        <Route path="admin/implants/:id" element={<ImplantDetailPage />} />
+        <Route path="admin/implants/edit/:id" element={<EditImplantPage />} />
 
 
   

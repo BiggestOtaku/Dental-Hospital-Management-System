@@ -3,10 +3,10 @@ import api from '../services/api';
 import { useParams, Link } from 'react-router-dom';
 
 export default function AppointmentDetailPage() {
-  const [appointment, setAppointment] = useState(null); 
+  const [appointment, setAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { id } = useParams(); 
+  const { id } = useParams();
 
   useEffect(() => {
     async function fetchAppointmentDetails() {
@@ -17,7 +17,7 @@ export default function AppointmentDetailPage() {
         setError(null);
 
         const response = await api.get(`/admin/get-appointment/${id}`);
-        setAppointment(response.data); 
+        setAppointment(response.data);
       } catch (err) {
         console.error("Error fetching appointment details:", err);
         setError(err.response?.data?.message || err.message || 'Failed to fetch appointment details.');
@@ -56,10 +56,16 @@ export default function AppointmentDetailPage() {
     <div className="container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <h2>Appointment Details (ID: {appointment.appointmentId})</h2>
+        <div>
+        <Link to={`/admin/appointments/edit/${appointment.appointmentId}`} className="btn btn-warning me-2">
+          Edit
+        </Link>
 
         <Link to="/admin/appointments" className="btn btn-secondary">
           &larr; Back to List
         </Link>
+        </div>
+        
       </div>
 
       <div className="card">

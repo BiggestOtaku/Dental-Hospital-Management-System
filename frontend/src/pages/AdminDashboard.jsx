@@ -24,29 +24,41 @@ export default function AdminDashboardPage() {
           1. Create a component for each page (e.g., AdminDoctorsPage)
           2. Add the routes in your App.jsx (e.g., <Route path="admin/doctors" ... />)
         */}
-        <Link 
-          to="/admin/doctors" 
+        <Link
+          to="/admin/doctors"
           className="list-group-item list-group-item-action"
         >
           Manage Doctors
         </Link>
-        <Link 
-          to="/admin/patients" 
+        <Link
+          to="/admin/patients"
           className="list-group-item list-group-item-action"
         >
           Manage Patients
         </Link>
-        <Link 
-          to="/admin/appointments" 
+        <Link
+          to="/admin/appointments"
           className="list-group-item list-group-item-action"
         >
           View All Appointments
         </Link>
-        <Link 
-          to="/admin/transactions" 
+        <Link
+          to="/admin/transactions"
           className="list-group-item list-group-item-action"
         >
           Manage Transactions
+        </Link>
+        <Link
+          to="/admin/camps"
+          className="list-group-item list-group-item-action"
+        >
+          Manage Camps
+        </Link>
+        <Link
+          to="/admin/implants"
+          className="list-group-item list-group-item-action"
+        >
+          Manage Implants
         </Link>
       </div>
     </div>
