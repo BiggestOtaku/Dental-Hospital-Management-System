@@ -9,6 +9,11 @@ import PatientsPage from './pages/PatientsPage';
 import NewPatientPage from './pages/NewPatientPage';
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
+import RoleRoute from './components/RoleRoute';
+import DoctorAppointments from './pages/DoctorAppointments';
+import DoctorRecords from './pages/DoctorRecords';
+import PatientBooking from './pages/PatientBooking';
+import PatientRecords from './pages/PatientRecords';
 
 /**
  * Layout component used for all protected pages.
@@ -33,6 +38,29 @@ export default function App() {
       <Route path="/signup" element={<SignupPage />} />
 
       {/* Protected routes: wrap the Layout with PrivateRoute so all children require auth */}
+      {/* Doctor routes - restrict to role DOCTOR */}
+      <Route path="doctor/appointments" element={
+        <RoleRoute allowedRoles={['DOCTOR']}>
+          <DoctorAppointments />
+        </RoleRoute>
+      } />
+      <Route path="doctor/records" element={
+        <RoleRoute allowedRoles={['DOCTOR']}>
+          <DoctorRecords />
+        </RoleRoute>
+      } />
+
+      {/* Patient routes */}
+      <Route path="patient/book" element={
+        <RoleRoute allowedRoles={['PATIENT']}>
+          <PatientBooking />
+        </RoleRoute>
+      } />
+      <Route path="patient/records" element={
+        <RoleRoute allowedRoles={['PATIENT']}>
+          <PatientRecords />
+        </RoleRoute>
+      } />
       <Route
         path="/"
         element={

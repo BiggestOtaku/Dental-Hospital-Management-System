@@ -24,6 +24,21 @@ export default function Header() {
             <Link to="/patients" className="btn btn-sm btn-outline-secondary">Patients</Link>
             <Link to="/patients/new" className="btn btn-sm btn-outline-secondary">New Patient</Link>
           </nav>
+          // inside Header component where you render nav links
+          <nav style={{display:'flex', gap:8, alignItems:'center'}}>
+            {user?.role?.toUpperCase?.().includes('DOCTOR') && (
+              <>
+                <Link to="/doctor/appointments" className="btn btn-sm btn-outline-secondary">Appointments</Link>
+                <Link to="/doctor/records" className="btn btn-sm btn-outline-secondary">Records</Link>
+              </>
+            )}
+            {user?.role?.toUpperCase?.().includes('PATIENT') && (
+              <>
+                <Link to="/patient/book" className="btn btn-sm btn-outline-secondary">Book</Link>
+                <Link to="/patient/records" className="btn btn-sm btn-outline-secondary">My Records</Link>
+              </>
+            )}
+          </nav>
         </div>
 
         <div style={{display:'flex', gap:12, alignItems:'center'}}>
