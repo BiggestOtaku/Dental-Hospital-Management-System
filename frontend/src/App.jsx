@@ -30,6 +30,7 @@ import AdminRawMaterialsPage from './pages/AdminRawMaterialsPage.jsx';
 import AddRawMaterialPage from './pages/AddRawMaterialPage.jsx';
 import RawMaterialDetailPage from './pages/RawMaterialDetailPage.jsx';
 import EditRawMaterialPage from './pages/EditRawMaterialPage.jsx';
+
 function Layout() {
   return (
     <div className="app-shell">
