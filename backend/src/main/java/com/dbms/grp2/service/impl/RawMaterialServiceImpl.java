@@ -78,5 +78,11 @@ public class RawMaterialServiceImpl implements RawMaterialService {
                 .map(material -> modelMapper.map(material, RawMaterialDto.class))
                 .collect(Collectors.toList());
     }
+    @Override
+    public Optional<RawMaterialDto> getRawMaterialById(Long materialId) {
+        //optional apne hisab se lega joh lena h
+        return rawMaterialRepository.findById(materialId)
+                .map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialDto.class));
+    }
 
 }

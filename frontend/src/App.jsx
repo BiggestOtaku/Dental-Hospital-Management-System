@@ -28,6 +28,8 @@ import EmployeeDetailPage from './pages/EmployeeDetailPage.jsx';
 import EditEmployeePage from './pages/EditEmployeePage.jsx';
 import AdminRawMaterialsPage from './pages/AdminRawMaterialsPage.jsx';
 import AddRawMaterialPage from './pages/AddRawMaterialPage.jsx';
+import RawMaterialDetailPage from './pages/RawMaterialDetailPage.jsx';
+import EditRawMaterialPage from './pages/EditRawMaterialPage.jsx';
 /**
  * Layout component used for all protected pages.
  * Header is shown and the page content is rendered inside .container
@@ -83,6 +85,8 @@ export default function App() {
         <Route path="admin/employees/:email" element={<EmployeeDetailPage />} />
         <Route path="admin/raw-materials" element={<AdminRawMaterialsPage />} />
         <Route path="admin/raw-materials/add" element={<AddRawMaterialPage />} />
+        <Route path="admin/raw-materials/:id" element={<RawMaterialDetailPage />} />
+        <Route path="admin/raw-materials/edit/:id" element={<EditRawMaterialPage />} />
 
 
   

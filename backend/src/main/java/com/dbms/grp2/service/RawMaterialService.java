@@ -1,5 +1,6 @@
 package com.dbms.grp2.service;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.dbms.grp2.dto.CreateRawMaterialDto;
 import com.dbms.grp2.dto.RawMaterialDto;
 import com.dbms.grp2.dto.UpdateRawMaterialAvailabilityDto;
@@ -16,4 +17,6 @@ public interface RawMaterialService {
     List<RawMaterialDto> getRawMaterialsByName(String materialName);
     Optional<RawMaterialDto> updateRawMaterialAvailability(Long materialId, UpdateRawMaterialAvailabilityDto updateDto);
     List<RawMaterialDto> getRawMaterialsForImplant(Long implantId);
+
+    Optional<RawMaterialDto> getRawMaterialById(Long materialId);
 }

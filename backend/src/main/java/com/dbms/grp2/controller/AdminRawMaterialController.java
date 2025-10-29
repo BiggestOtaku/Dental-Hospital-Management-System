@@ -60,5 +60,11 @@ public class AdminRawMaterialController {
         List<RawMaterialDto> materials = rawMaterialService.getRawMaterialsForImplant(implantId);
         return ResponseEntity.ok(materials);
     }
+    @GetMapping("/get-raw-material-byID/{id}")
+    public ResponseEntity<RawMaterialDto> getRawMaterialById(@PathVariable("id") Long materialId) {
+        return rawMaterialService.getRawMaterialById(materialId)
+                .map(ResponseEntity::ok) // If found, wrap in 200 OK response
+                .orElse(ResponseEntity.notFound().build()); // If not found, return 404
+    }
 
 }
