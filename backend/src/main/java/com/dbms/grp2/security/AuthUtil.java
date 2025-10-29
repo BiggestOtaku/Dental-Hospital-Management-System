@@ -36,7 +36,7 @@ public class AuthUtil {
                 .setClaims(claims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*120))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*100))
                 .signWith(getSecretKey())
                 .compact();
     }
@@ -52,7 +52,7 @@ public class AuthUtil {
         return getClaimsFromToken(token).getSubject();
     }
 
-    public String getRoleFromToken(String token) {
-        return getClaimsFromToken(token).get("role").toString();
+    public java.util.List<String> getRolesFromToken(String token) {
+        return getClaimsFromToken(token).get("roles", java.util.List.class);
     }
 }
