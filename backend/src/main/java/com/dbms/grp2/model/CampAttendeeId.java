@@ -11,7 +11,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class CampAttendeeId implements Serializable {
-
     private Long campId;      // Must match entity PK field name
     private Long patientId;   // Must match entity PK field name
 }

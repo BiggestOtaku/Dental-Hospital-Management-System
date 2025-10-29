@@ -2,6 +2,7 @@ package com.dbms.grp2.service;
 
 import com.dbms.grp2.dto.AppointmentDetailDto;
 import com.dbms.grp2.dto.AppointmentDto;
+import com.dbms.grp2.dto.AppointmentRequestDto;
 import com.dbms.grp2.dto.UpdateAppointmentDto;
 import com.dbms.grp2.model.Appointment;
 import org.springframework.data.domain.Page;
@@ -14,4 +15,6 @@ public interface AppointmentService {
     Page<AppointmentDto> getAllAppointments(Pageable pageable);
     Optional<AppointmentDto> updateAppointment(Long appointmentId, UpdateAppointmentDto updateDto);
     Optional<AppointmentDetailDto> getAppointmentById(Long appointmentId);
+    Page<AppointmentDetailDto> getAppointmentsByPatientId(Long patientId, Pageable pageable);
+    void requestAppointment(AppointmentRequestDto appointmentRequestDto);
 }

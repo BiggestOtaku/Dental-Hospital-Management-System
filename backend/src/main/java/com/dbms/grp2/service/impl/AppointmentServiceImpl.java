@@ -2,8 +2,10 @@ package com.dbms.grp2.service.impl;
 
 import com.dbms.grp2.dto.AppointmentDetailDto;
 import com.dbms.grp2.dto.AppointmentDto;
+import com.dbms.grp2.dto.AppointmentRequestDto;
 import com.dbms.grp2.dto.UpdateAppointmentDto;
 import com.dbms.grp2.model.Appointment;
+import com.dbms.grp2.model.AppointmentRequest;
 import com.dbms.grp2.model.Employee;
 import com.dbms.grp2.model.Patient;
 import com.dbms.grp2.repository.AppointmentRepository;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -124,5 +127,29 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         return Optional.of(dto);
+    }
+
+    @Override
+    public Page<AppointmentDetailDto> getAppointmentsByPatientId(Long patientId, Pageable pageable) {
+        Page<Appointment> appointments = appointmentRepository.findByPatientId(patientId, pageable);
+
+        return appointments.map(appointment -> {
+            AppointmentDetailDto dto = modelMapper.map(appointment, AppointmentDetailDto.class);
+            dto.setEmployeeEmailId(appointment.getEmployee().getFirstName() + " " + appointment.getEmployee().getLastName());
+            dto.setPatientEmailId(appointment.getPatient().getFirstName() + " " + appointment.getPatient().getLastName());
+            return dto;
+        });
+    }
+
+    @Override
+    public void requestAppointment(AppointmentRequestDto appointmentRequestDto) {
+        Patient patient = patientRepository.findById(appointmentRequestDto.getPatientId()).orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+        Employee doctor = employeeRepository.findById(appointmentRequestDto.getDoctorId()).orElseThrow(() -> new IllegalArgumentException("Doctor not found"));
+
+        if(!Objects.equals(doctor.getHumanResource().getHrType(), "doctor"))
+            throw new IllegalArgumentException("Employee is not a Doctor");
+
+        AppointmentRequest appointmentRequest = AppointmentRequest.builder()
+                .
     }
 }

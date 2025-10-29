@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
@@ -11,10 +10,6 @@ import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
 import LogoutPage from './pages/LogoutPage';
 
-/**
- * Layout component used for all protected pages.
- * Header is shown and the page content is rendered inside .container
- */
 function Layout() {
   return (
     <div className="app-shell">

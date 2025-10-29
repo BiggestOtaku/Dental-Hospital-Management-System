@@ -38,6 +38,7 @@ public class AdminAppointmentController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @GetMapping("/get-appointment/{id}")
     public ResponseEntity<AppointmentDetailDto> getAppointmentById(@PathVariable("id") Long appointmentId) {
         return appointmentService.getAppointmentById(appointmentId)
