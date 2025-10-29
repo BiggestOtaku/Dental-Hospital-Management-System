@@ -25,6 +25,9 @@ import ImplantDetailPage from './pages/ImplantDetailPage.jsx';
 import EditImplantPage from './pages/EditImplantPage.jsx';
 import AdminEmployeesPage from './pages/AdminEmployeesPage.jsx';
 import EmployeeDetailPage from './pages/EmployeeDetailPage.jsx';
+import EditEmployeePage from './pages/EditEmployeePage.jsx';
+import AdminRawMaterialsPage from './pages/AdminRawMaterialsPage.jsx';
+import AddRawMaterialPage from './pages/AddRawMaterialPage.jsx';
 /**
  * Layout component used for all protected pages.
  * Header is shown and the page content is rendered inside .container
@@ -76,7 +79,10 @@ export default function App() {
         <Route path="admin/implants/:id" element={<ImplantDetailPage />} />
         <Route path="admin/implants/edit/:id" element={<EditImplantPage />} />
         <Route path="admin/employees" element={<AdminEmployeesPage />} />
+        <Route path="admin/employees/edit/:email" element={<EditEmployeePage />} />
         <Route path="admin/employees/:email" element={<EmployeeDetailPage />} />
+        <Route path="admin/raw-materials" element={<AdminRawMaterialsPage />} />
+        <Route path="admin/raw-materials/add" element={<AddRawMaterialPage />} />
 
 
   

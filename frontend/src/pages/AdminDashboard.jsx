@@ -30,12 +30,18 @@ export default function AdminDashboardPage() {
         >
           Manage Employees
         </Link>
-        
+
         <Link
           to="/admin/appointments"
           className="list-group-item list-group-item-action"
         >
           View All Appointments
+        </Link>
+        <Link
+          to="/admin/raw-materials"
+          className="list-group-item list-group-item-action"
+        >
+          Manage Raw Materials
         </Link>
         <Link
           to="/admin/transactions"
