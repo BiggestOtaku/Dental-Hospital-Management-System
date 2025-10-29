@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function AdminTransactionsPage() {
     const [transactions, setTransactions] = useState([]);
@@ -13,6 +13,19 @@ export default function AdminTransactionsPage() {
     // --- Sorting State ---
     const [sortBy, setSortBy] = useState('transactionDate');
     const [sortDir, setSortDir] = useState('DESC');
+
+    const [searchId, setSearchId] = useState('');
+    const navigate = useNavigate();
+    const handleSearchSubmit = (e) => {
+        e.preventDefault(); // Prevent form submission from reloading page
+        const idToNavigate = searchId.trim(); // Remove leading/trailing spaces
+        if (idToNavigate && !isNaN(idToNavigate)) { // Check if it's a non-empty number
+            navigate(`/admin/transactions/${idToNavigate}`);
+        } else {
+            alert('Please enter a valid Appointment ID (number).');
+            setSearchId(''); // Clear invalid input
+        }
+    };
 
     async function fetchTransactions(page = 0, currentSortBy = sortBy, currentSortDir = sortDir) {
         try {
@@ -84,6 +97,19 @@ export default function AdminTransactionsPage() {
                     <Link to="/admin" className="btn btn-secondary">&larr; Back to Admin</Link>
                 </div>
             </div>
+            <form onSubmit={handleSearchSubmit} className="input-group mb-3">
+                <input
+                    type="search" // Use type="search" for better semantics
+                    className="form-control"
+                    placeholder="Search by Transaction ID..."
+                    aria-label="Search Transacion ID"
+                    value={searchId}
+                    onChange={(e) => setSearchId(e.target.value)}
+                />
+                <button className="btn btn-outline-secondary" type="submit">
+                    Go
+                </button>
+            </form>
 
 
 

@@ -12,5 +12,6 @@ public class CampResponseDTO {
     private LocalDateTime endTime;
     private String city;
     private String state;
+    private Long attendeeCount;
     private TransactionSummaryDTO transaction;
 }

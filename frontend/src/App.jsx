@@ -23,6 +23,8 @@ import AdminImplantsPage from './pages/AdminImplantsPage.jsx';
 import AddImplantPage from './pages/AddImplantPage.jsx';
 import ImplantDetailPage from './pages/ImplantDetailPage.jsx';
 import EditImplantPage from './pages/EditImplantPage.jsx';
+import AdminEmployeesPage from './pages/AdminEmployeesPage.jsx';
+import EmployeeDetailPage from './pages/EmployeeDetailPage.jsx';
 /**
  * Layout component used for all protected pages.
  * Header is shown and the page content is rendered inside .container
@@ -73,6 +75,8 @@ export default function App() {
         <Route path="admin/implants/add" element={<AddImplantPage />} />
         <Route path="admin/implants/:id" element={<ImplantDetailPage />} />
         <Route path="admin/implants/edit/:id" element={<EditImplantPage />} />
+        <Route path="admin/employees" element={<AdminEmployeesPage />} />
+        <Route path="admin/employees/:email" element={<EmployeeDetailPage />} />
 
 
   

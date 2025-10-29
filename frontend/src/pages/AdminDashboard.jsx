@@ -25,17 +25,12 @@ export default function AdminDashboardPage() {
           2. Add the routes in your App.jsx (e.g., <Route path="admin/doctors" ... />)
         */}
         <Link
-          to="/admin/doctors"
+          to="/admin/employees"
           className="list-group-item list-group-item-action"
         >
-          Manage Doctors
+          Manage Employees
         </Link>
-        <Link
-          to="/admin/patients"
-          className="list-group-item list-group-item-action"
-        >
-          Manage Patients
-        </Link>
+        
         <Link
           to="/admin/appointments"
           className="list-group-item list-group-item-action"

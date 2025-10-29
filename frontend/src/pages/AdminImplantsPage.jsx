@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function AdminImplantsPage() {
   const [implants, setImplants] = useState([]);
@@ -10,8 +10,21 @@ export default function AdminImplantsPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const [sortBy, setSortBy] = useState('implantID'); 
+  const [sortBy, setSortBy] = useState('implantID');
   const [sortDir, setSortDir] = useState('ASC');//Ascending isliye kiyonki IDs se h
+
+  const [searchId, setSearchId] = useState('');
+  const navigate = useNavigate();
+  const handleSearchSubmit = (e) => {
+    e.preventDefault(); // Prevent form submission from reloading page
+    const idToNavigate = searchId.trim(); // Remove leading/trailing spaces
+    if (idToNavigate && !isNaN(idToNavigate)) { // Check if it's a non-empty number
+      navigate(`/admin/implants/${idToNavigate}`);
+    } else {
+      alert('Please enter a valid Appointment ID (number).');
+      setSearchId(''); // Clear invalid input
+    }
+  };
 
   async function fetchImplants(page = 0, currentSortBy = sortBy, currentSortDir = sortDir) {
     try {
@@ -55,7 +68,7 @@ export default function AdminImplantsPage() {
       setSortDir(newSortDir);
     } else {
       setSortBy(column);
-      setSortDir(column === 'implantID' ? 'ASC' : 'DESC'); 
+      setSortDir(column === 'implantID' ? 'ASC' : 'DESC');
     }
   };
 
@@ -64,12 +77,12 @@ export default function AdminImplantsPage() {
     return sortDir === 'ASC' ? ' ▲' : ' ▼';
   };
 
-   const formatDate = (dateString) => {
+  const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     try {
-      return new Date(dateString + 'T00:00:00Z').toLocaleDateString(); 
+      return new Date(dateString + 'T00:00:00Z').toLocaleDateString();
     } catch (e) {
-       console.error("Error formatting date:", dateString, e);
+      console.error("Error formatting date:", dateString, e);
       return 'Invalid Date';
     }
   };
@@ -93,6 +106,19 @@ export default function AdminImplantsPage() {
           <Link to="/admin" className="btn btn-secondary">&larr; Back to Admin</Link>
         </div>
       </div>
+      <form onSubmit={handleSearchSubmit} className="input-group mb-3">
+        <input
+          type="search" // Use type="search" for better semantics
+          className="form-control"
+          placeholder="Search by implant ID..."
+          aria-label="Search impant ID"
+          value={searchId}
+          onChange={(e) => setSearchId(e.target.value)}
+        />
+        <button className="btn btn-outline-secondary" type="submit">
+          Go
+        </button>
+      </form>
 
       <table className="table table-striped table-hover">
         <thead>
@@ -109,16 +135,16 @@ export default function AdminImplantsPage() {
             <th onClick={() => handleSort('price')} style={{ cursor: 'pointer' }}>
               Price{getSortIndicator('price')}
             </th>
-             <th onClick={() => handleSort('available')} style={{ cursor: 'pointer' }}>
+            <th onClick={() => handleSort('available')} style={{ cursor: 'pointer' }}>
               Available{getSortIndicator('available')}
             </th>
-             <th onClick={() => handleSort('maximumQuantity')} style={{ cursor: 'pointer' }}>
+            <th onClick={() => handleSort('maximumQuantity')} style={{ cursor: 'pointer' }}>
               Max Qty{getSortIndicator('maximumQuantity')}
             </th>
-             <th onClick={() => handleSort('sterilizationDate')} style={{ cursor: 'pointer' }}>
+            <th onClick={() => handleSort('sterilizationDate')} style={{ cursor: 'pointer' }}>
               Sterilization Date{getSortIndicator('sterilizationDate')}
             </th>
-            <th>Expiry Period</th> 
+            <th>Expiry Period</th>
           </tr>
         </thead>
         <tbody>
@@ -127,16 +153,16 @@ export default function AdminImplantsPage() {
               <tr key={implant.implantID}>
                 <td>
                   <Link to={`/admin/implants/${implant.implantID}`}>
-                     {implant.implantID}
+                    {implant.implantID}
                   </Link>
-                 </td>
+                </td>
                 <td>{implant.type || 'N/A'}</td>
                 <td>{implant.size || 'N/A'}</td>
                 <td>{implant.price != null ? `$${Number(implant.price).toFixed(2)}` : 'N/A'}</td>
                 <td>{implant.available ?? 'N/A'}</td>
                 <td>{implant.maximumQuantity ?? 'N/A'}</td>
                 <td>{formatDate(implant.sterilizationDate)}</td>
-                <td>{implant.expiryPeriod != null ? `${implant.expiryPeriod} units` : 'N/A'}</td> 
+                <td>{implant.expiryPeriod != null ? `${implant.expiryPeriod} units` : 'N/A'}</td>
               </tr>
             ))
           ) : (

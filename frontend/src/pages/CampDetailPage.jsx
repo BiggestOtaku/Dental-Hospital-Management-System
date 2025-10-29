@@ -72,6 +72,7 @@ export default function CampDetailPage() {
           <h5 className="card-title">Camp Information</h5>
           <ul className="list-group list-group-flush">
             <li className="list-group-item"><strong>ID:</strong> {camp.campId}</li>
+            <li className="list-group-item"><strong>AttendeeCount:</strong> {camp.attendeeCount}</li>
             <li className="list-group-item"><strong>Date:</strong> {formatDate(camp.date)}</li>
             <li className="list-group-item"><strong>Start Time:</strong> {formatDateTime(camp.startTime)}</li>
             <li className="list-group-item"><strong>End Time:</strong> {formatDateTime(camp.endTime)}</li>

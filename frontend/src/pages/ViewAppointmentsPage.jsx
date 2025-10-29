@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api'; // Your configured Axios instance
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function ViewAppointmentsPage() {
   const [appointments, setAppointments] = useState([]);
@@ -14,6 +14,19 @@ export default function ViewAppointmentsPage() {
   // --- 1. ADD STATE FOR SORTING ---
   const [sortBy, setSortBy] = useState('date'); // Default sort column
   const [sortDir, setSortDir] = useState('DESC'); // Default sort direction
+
+  const [searchId, setSearchId] = useState('');
+  const navigate = useNavigate();
+  const handleSearchSubmit = (e) => {
+    e.preventDefault(); // Prevent form submission from reloading page
+    const idToNavigate = searchId.trim(); // Remove leading/trailing spaces
+    if (idToNavigate && !isNaN(idToNavigate)) { // Check if it's a non-empty number
+      navigate(`/admin/appointments/${idToNavigate}`);
+    } else {
+      alert('Please enter a valid Appointment ID (number).');
+      setSearchId(''); // Clear invalid input
+    }
+  };
 
   // 2. UPDATE fetchAppointments TO ACCEPT SORT PARAMETERS
   async function fetchAppointments(page = 0, currentSortBy = sortBy, currentSortDir = sortDir) {
@@ -102,6 +115,19 @@ export default function ViewAppointmentsPage() {
           &larr; Back to Admin
         </Link>
       </div>
+      <form onSubmit={handleSearchSubmit} className="input-group mb-3">
+        <input
+          type="search" // Use type="search" for better semantics
+          className="form-control"
+          placeholder="Search by Appointment ID..."
+          aria-label="Search Appointment ID"
+          value={searchId}
+          onChange={(e) => setSearchId(e.target.value)}
+        />
+        <button className="btn btn-outline-secondary" type="submit">
+          Go
+        </button>
+      </form>
 
       <table className="table table-striped table-hover">
         <thead>
