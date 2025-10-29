@@ -63,8 +63,8 @@ public class AdminRawMaterialController {
     @GetMapping("/get-raw-material-byID/{id}")
     public ResponseEntity<RawMaterialDto> getRawMaterialById(@PathVariable("id") Long materialId) {
         return rawMaterialService.getRawMaterialById(materialId)
-                .map(ResponseEntity::ok) // If found, wrap in 200 OK response
-                .orElse(ResponseEntity.notFound().build()); // If not found, return 404
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

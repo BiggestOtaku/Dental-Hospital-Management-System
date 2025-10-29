@@ -1,7 +1,7 @@
 package com.dbms.grp2.service.impl;
 
 import com.dbms.grp2.dto.AppointmentDetailDto;
-import com.dbms.grp2.dto.AppointmentDto;
+import com.dbms.grp2.dto.AppointmentDetailDto;
 import com.dbms.grp2.dto.AppointmentRequestDto;
 import com.dbms.grp2.dto.UpdateAppointmentDto;
 import com.dbms.grp2.model.Appointment;
@@ -47,13 +47,17 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return appointmentRepository.save(appointment);
     }
+
     @Override
-    public Page<AppointmentDto> getAllAppointments(Pageable pageable) {
+    public Page<AppointmentDetailDto> getAllAppointments(Pageable pageable) {
         Page<Appointment> appointmentsPage = appointmentRepository.findAll(pageable);
         return appointmentsPage.map(this::convertToDto);
     }
-    private AppointmentDto convertToDto(Appointment appointment) {
-        AppointmentDto dto = modelMapper.map(appointment, AppointmentDto.class);
+
+    private AppointmentDetailDto convertToDto(Appointment appointment) {
+        AppointmentDetailDto dto = modelMapper.map(appointment, AppointmentDetailDto.class);
+        dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
+        dto.setPatientEmailId(appointment.getPatient().getEmailId());
         if (appointment.getPatient() != null) {
             dto.setPatientId(appointment.getPatient().getPatientId());
         }
@@ -63,8 +67,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return dto;
     }
+    
     @Override
-    public Optional<AppointmentDto> updateAppointment(Long appointmentId, UpdateAppointmentDto updateDto) {
+    public Optional<AppointmentDetailDto> updateAppointment(Long appointmentId, UpdateAppointmentDto updateDto) {
 
         Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointmentId);
 
@@ -117,6 +122,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         dto.setPaymentMode(appointment.getPaymentMode());
         dto.setStatus(appointment.getStatus());
         dto.setReport(appointment.getReport());
+        dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
+        dto.setPatientEmailId(appointment.getPatient().getEmailId());
+
         if (appointment.getPatient() != null) {
             dto.setPatientId(appointment.getPatient().getPatientId());
             dto.setPatientEmailId(appointment.getPatient().getEmailId());
@@ -131,12 +139,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Page<AppointmentDetailDto> getAppointmentsByPatientId(Long patientId, Pageable pageable) {
-        Page<Appointment> appointments = appointmentRepository.findByPatientId(patientId, pageable);
+        Page<Appointment> appointments = appointmentRepository.findByPatientPatientId(patientId, pageable);
 
         return appointments.map(appointment -> {
             AppointmentDetailDto dto = modelMapper.map(appointment, AppointmentDetailDto.class);
-            dto.setEmployeeEmailId(appointment.getEmployee().getFirstName() + " " + appointment.getEmployee().getLastName());
-            dto.setPatientEmailId(appointment.getPatient().getFirstName() + " " + appointment.getPatient().getLastName());
+            dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
+            dto.setPatientEmailId(appointment.getPatient().getEmailId());
             return dto;
         });
     }
@@ -149,7 +157,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         if(!Objects.equals(doctor.getHumanResource().getHrType(), "doctor"))
             throw new IllegalArgumentException("Employee is not a Doctor");
 
-        AppointmentRequest appointmentRequest = AppointmentRequest.builder()
-                .
+//        AppointmentRequest appointmentRequest = AppointmentRequest.builder()
+//                .
     }
 }

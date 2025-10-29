@@ -136,11 +136,11 @@ export default function ViewAppointmentsPage() {
             <th onClick={() => handleSort('appointmentId')} style={{ cursor: 'pointer' }}>
               Appt ID{getSortIndicator('appointmentId')}
             </th>
-            <th onClick={() => handleSort('patientId')} style={{ cursor: 'pointer' }}>
-              Patient ID{getSortIndicator('patientId')}
+            <th>
+              Patient Email ID
             </th>
-            <th onClick={() => handleSort('employeeId')} style={{ cursor: 'pointer' }}>
-              Doctor ID{getSortIndicator('employeeId')}
+            <th>
+              Doctor Email ID
             </th>
             {/* 5. MAKE DATE HEADER CLICKABLE */}
             <th onClick={() => handleSort('date')} style={{ cursor: 'pointer' }}>
@@ -161,8 +161,8 @@ export default function ViewAppointmentsPage() {
                     {app.appointmentId}
                   </Link>
                 </td>
-                <td>{app.patientId}</td>
-                <td>{app.employeeId}</td>
+                <td>{app.patientEmailId}</td>
+                <td>{app.employeeEmailId}</td>
                 <td>{app.date ? new Date(app.date).toLocaleString() : '-'}</td>
                 <td>{app.report || '-'}</td>
                 <td>{app.status || '-'}</td>

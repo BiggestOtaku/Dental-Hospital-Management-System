@@ -6,7 +6,6 @@ import com.dbms.grp2.dto.UpdateAppointmentDto;
 import com.dbms.grp2.service.AppointmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,15 +22,15 @@ public class AdminAppointmentController {
     private final AppointmentService appointmentService;
 
     @GetMapping("/appointments")
-    public ResponseEntity<Page<AppointmentDto>> getAllAppointments(
+    public ResponseEntity<Page<AppointmentDetailDto>> getAllAppointments(
             @PageableDefault(sort = "date", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<AppointmentDto> appointments = appointmentService.getAllAppointments(pageable);
+        Page<AppointmentDetailDto> appointments = appointmentService.getAllAppointments(pageable);
         return ResponseEntity.ok(appointments);
     }
 
     @PatchMapping("/update-appointment/{id}")
-    public ResponseEntity<AppointmentDto> updateAppointment(
+    public ResponseEntity<AppointmentDetailDto> updateAppointment(
             @PathVariable("id") Long appointmentId,
             @Valid @RequestBody UpdateAppointmentDto updateDto) {
 

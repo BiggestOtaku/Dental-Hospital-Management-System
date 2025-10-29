@@ -29,30 +29,30 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
-
-    /**
-     * This bean provides the global CORS configuration.
-     * It's used by the .cors(Customizer.withDefaults()) rule below.
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        // This is your React app's origin
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-
-        // Allow all methods (GET, POST, etc.) and all headers
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-
-        // This allows credentials (like your JWT token) to be sent
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply this configuration to all routes in your application
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//
+//    /**
+//     * This bean provides the global CORS configuration.
+//     * It's used by the .cors(Customizer.withDefaults()) rule below.
+//     */
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//
+//        // This is your React app's origin
+//        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+//
+//        // Allow all methods (GET, POST, etc.) and all headers
+//        configuration.setAllowedMethods(List.of("*"));
+//        configuration.setAllowedHeaders(List.of("*"));
+//
+//        // This allows credentials (like your JWT token) to be sent
+//        configuration.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        // Apply this configuration to all routes in your application
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -96,10 +96,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
-    /**
-     * Defines the PasswordEncoder (BCrypt) to be used for hashing
-     * and checking passwords. This is injected into your AuthService.
-     */
-
 }
