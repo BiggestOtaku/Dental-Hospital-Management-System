@@ -105,7 +105,12 @@ export default function AdminEmployeesPage() {
         <div className="container">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <h2>Employee List</h2>
-                <Link to="/admin" className="btn btn-secondary">&larr; Back to Admin</Link>
+                <div>
+                    <Link to="/admin/employees/add" className="btn btn-primary me-2">
+                        + Add New Employee
+                    </Link>
+                    <Link to="/admin" className="btn btn-secondary">&larr; Back to Admin</Link>
+                </div>
             </div>
 
 
