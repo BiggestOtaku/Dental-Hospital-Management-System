@@ -110,10 +110,8 @@ export default function App() {
         <Route path="patients" element={<PatientsPage />} />
         <Route path="patients/profile" element={<ProfilePage />} />
 
-        {/* Add more protected routes here as you implement them */}
       </Route>
 
-      {/* Fallback: redirect unknown paths to login (or to / if you prefer) */}
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );

@@ -12,7 +12,6 @@ export default function Dashboard() {
 
       <div className="row mt-5">
         
-        {/* Appointment Card */}
         <div className="col-md-4 mb-4">
           <div className="card shadow-sm h-100">
             <div className="card-body">
@@ -25,7 +24,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Profile Card */}
         <div className="col-md-4 mb-4">
           <div className="card shadow-sm h-100">
             <div className="card-body">
@@ -37,8 +35,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-
-        {/* Add more patient/doctor features here */}
 
       </div>
     </div>
