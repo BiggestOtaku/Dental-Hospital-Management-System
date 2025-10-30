@@ -145,6 +145,12 @@ export default function AdminDashboardPage() {
         >
           Manage Implant Businesses
         </Link>
+        <Link
+          to="/admin/camp-employees"
+          className="list-group-item list-group-item-action"
+        >
+          Manage Camp Employees
+        </Link>
       </div>
     </div>
   );

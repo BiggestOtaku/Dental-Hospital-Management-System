@@ -33,6 +33,7 @@ import EditRawMaterialPage from './pages/EditRawMaterialPage.jsx';
 import AddEmployeePage from './pages/AddEmployeePage.jsx';
 import AdminImplantBusinessPage from './pages/AdminImplantBusinessPage.jsx';
 import AddImplantBusinessPage from './pages/AddImplantBusinessPage.jsx';
+import AdminCampEmployeePage from './pages/AdminCampEmployeePage.jsx';
 function Layout() {
   return (
     <div className="app-shell">
@@ -89,6 +90,7 @@ export default function App() {
         <Route path="admin/employees/add" element={<AddEmployeePage />} />
         <Route path="admin/implant-business" element={<AdminImplantBusinessPage />} />
         <Route path="admin/implant-business/add" element={<AddImplantBusinessPage />} />
+        <Route path="admin/camp-employees" element={<AdminCampEmployeePage />} />
 
 
   
