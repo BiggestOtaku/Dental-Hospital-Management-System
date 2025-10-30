@@ -20,10 +20,6 @@ export default function AdminDashboardPage() {
 
       <h3>Admin Tools</h3>
       <div className="list-group">
-        {/* These links are just examples. To make them work, you must:
-          1. Create a component for each page (e.g., AdminDoctorsPage)
-          2. Add the routes in your App.jsx (e.g., <Route path="admin/doctors" ... />)
-        */}
         <Link
           to="/admin/employees"
           className="list-group-item list-group-item-action"

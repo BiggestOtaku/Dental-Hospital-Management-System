@@ -156,7 +156,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentRequest appointmentRequest = AppointmentRequest.builder()
                 .patient(patient)
                 .requestedDoctor(doctor)
-                .requestDate(LocalDate.now().plusDays(1))
+                .requestDate(LocalDate.now())
                 .build();
 
         appointmentRequestRepository.save(appointmentRequest);
