@@ -10,7 +10,6 @@ import java.util.List;
 //implementation jpa khud kr lega
 @Repository
 public interface AppointmentRequestRepository extends JpaRepository<AppointmentRequest, Long> {
-
     List<AppointmentRequest> findByRequestDateOrderByCreatedAtAsc(LocalDate date);
 
     void deleteByRequestDateBefore(LocalDate date);

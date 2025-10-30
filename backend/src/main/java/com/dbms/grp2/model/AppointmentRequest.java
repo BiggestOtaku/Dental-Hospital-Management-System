@@ -34,6 +34,7 @@ public class AppointmentRequest {
     private LocalDate requestDate;
 
     @Column(nullable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public AppointmentRequest(Patient patient, Employee requestedDoctor, LocalDate requestDate) {
