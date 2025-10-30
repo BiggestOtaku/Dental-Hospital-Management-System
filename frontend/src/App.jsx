@@ -30,7 +30,9 @@ import AdminRawMaterialsPage from './pages/AdminRawMaterialsPage.jsx';
 import AddRawMaterialPage from './pages/AddRawMaterialPage.jsx';
 import RawMaterialDetailPage from './pages/RawMaterialDetailPage.jsx';
 import EditRawMaterialPage from './pages/EditRawMaterialPage.jsx';
-
+import AddEmployeePage from './pages/AddEmployeePage.jsx';
+import AdminImplantBusinessPage from './pages/AdminImplantBusinessPage.jsx';
+import AddImplantBusinessPage from './pages/AddImplantBusinessPage.jsx';
 function Layout() {
   return (
     <div className="app-shell">
@@ -84,6 +86,9 @@ export default function App() {
         <Route path="admin/raw-materials/add" element={<AddRawMaterialPage />} />
         <Route path="admin/raw-materials/:id" element={<RawMaterialDetailPage />} />
         <Route path="admin/raw-materials/edit/:id" element={<EditRawMaterialPage />} />
+        <Route path="admin/employees/add" element={<AddEmployeePage />} />
+        <Route path="admin/implant-business" element={<AdminImplantBusinessPage />} />
+        <Route path="admin/implant-business/add" element={<AddImplantBusinessPage />} />
 
 
   

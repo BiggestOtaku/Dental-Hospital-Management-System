@@ -61,6 +61,12 @@ export default function AdminDashboardPage() {
         >
           Manage Implants
         </Link>
+        <Link
+          to="/admin/implant-business"
+          className="list-group-item list-group-item-action"
+        >
+          Manage Implant Businesses
+        </Link>
       </div>
     </div>
   );

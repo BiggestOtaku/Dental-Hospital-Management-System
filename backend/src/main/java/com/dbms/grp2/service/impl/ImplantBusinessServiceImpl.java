@@ -10,6 +10,8 @@ import com.dbms.grp2.service.ImplantBusinessService;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,5 +44,10 @@ public class ImplantBusinessServiceImpl implements ImplantBusinessService {
         ImplantBusiness implantBusiness = modelMapper.map(createDto, ImplantBusiness.class);
         ImplantBusiness savedRecord = implantBusinessRepository.save(implantBusiness);
         return modelMapper.map(savedRecord, ImplantBusinessDto.class);
+    }
+    @Override
+    public Page<ImplantBusinessDto> getAllImplantBusinesses(Pageable pageable) {
+        Page<ImplantBusiness> recordsPage = implantBusinessRepository.findAll(pageable);
+        return recordsPage.map(record -> modelMapper.map(record, ImplantBusinessDto.class));
     }
 }
