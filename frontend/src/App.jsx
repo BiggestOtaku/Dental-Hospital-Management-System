@@ -7,10 +7,12 @@ import Dashboard from './pages/Dashboard';
 import PatientsPage from './pages/PatientsPage';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 import Header from './components/Header';
 import LogoutPage from './pages/LogoutPage';
 import AdminDashboard from './pages/AdminDashboard';
 import ViewAppointmentsPage from './pages/ViewAppointmentsPage.jsx';
+import PatientAppointmentsPage from './pages/PatientAppointmentsPage.jsx';
 import AppointmentDetailPage from './pages/AppointmentDetailPage';
 import AdminTransactionsPage from './pages/AdminTransactionsPage.jsx';
 import AddTransactionPage from './pages/AddTransactionPage.jsx';
@@ -64,37 +66,47 @@ export default function App() {
         <Route index element={<Dashboard />} />
 
         {/* /admin route */}
-        <Route path="admin" element={<AdminDashboard />} />
-      
-        <Route path="admin/appointments" element={<ViewAppointmentsPage />} />
-        <Route path="admin/appointments/:id" element={<AppointmentDetailPage />} />
-        <Route path="admin/transactions" element={<AdminTransactionsPage />} />
-        <Route path="admin/transactions/add" element={<AddTransactionPage />} />
-        <Route path="admin/transactions/:id" element={<TransactionDetailPage />} />
-        <Route path="admin/camps" element={<AdminCampsPage />} />
-        <Route path="admin/camps/:id" element={<CampDetailPage />} />
-        <Route path="admin/camps/add" element={<AddCampPage />} />
-        <Route path="admin/appointments/edit/:id" element={<EditAppointmentPage />} />
-        <Route path="admin/implants" element={<AdminImplantsPage />} />
-        <Route path="admin/implants/add" element={<AddImplantPage />} />
-        <Route path="admin/implants/:id" element={<ImplantDetailPage />} />
-        <Route path="admin/implants/edit/:id" element={<EditImplantPage />} />
-        <Route path="admin/employees" element={<AdminEmployeesPage />} />
-        <Route path="admin/employees/edit/:email" element={<EditEmployeePage />} />
-        <Route path="admin/employees/:email" element={<EmployeeDetailPage />} />
-        <Route path="admin/raw-materials" element={<AdminRawMaterialsPage />} />
-        <Route path="admin/raw-materials/add" element={<AddRawMaterialPage />} />
-        <Route path="admin/raw-materials/:id" element={<RawMaterialDetailPage />} />
-        <Route path="admin/raw-materials/edit/:id" element={<EditRawMaterialPage />} />
-        <Route path="admin/employees/add" element={<AddEmployeePage />} />
-        <Route path="admin/implant-business" element={<AdminImplantBusinessPage />} />
-        <Route path="admin/implant-business/add" element={<AddImplantBusinessPage />} />
 
+        <Route
+        path="/"
+        element={
+          <AdminRoute>
+            <Outlet />
+          </AdminRoute>
+        }
+        >
+          <Route path="admin" element={<AdminDashboard />} />
+        
+          <Route path="admin/appointments" element={<ViewAppointmentsPage />} />
+          <Route path="admin/appointments/:id" element={<AppointmentDetailPage />} />
+          <Route path="admin/transactions" element={<AdminTransactionsPage />} />
+          <Route path="admin/transactions/add" element={<AddTransactionPage />} />
+          <Route path="admin/transactions/:id" element={<TransactionDetailPage />} />
+          <Route path="admin/camps" element={<AdminCampsPage />} />
+          <Route path="admin/camps/:id" element={<CampDetailPage />} />
+          <Route path="admin/camps/add" element={<AddCampPage />} />
+          <Route path="admin/appointments/edit/:id" element={<EditAppointmentPage />} />
+          <Route path="admin/implants" element={<AdminImplantsPage />} />
+          <Route path="admin/implants/add" element={<AddImplantPage />} />
+          <Route path="admin/implants/:id" element={<ImplantDetailPage />} />
+          <Route path="admin/implants/edit/:id" element={<EditImplantPage />} />
+          <Route path="admin/employees" element={<AdminEmployeesPage />} />
+          <Route path="admin/employees/edit/:email" element={<EditEmployeePage />} />
+          <Route path="admin/employees/:email" element={<EmployeeDetailPage />} />
+          <Route path="admin/raw-materials" element={<AdminRawMaterialsPage />} />
+          <Route path="admin/raw-materials/add" element={<AddRawMaterialPage />} />
+          <Route path="admin/raw-materials/:id" element={<RawMaterialDetailPage />} />
+          <Route path="admin/raw-materials/edit/:id" element={<EditRawMaterialPage />} />
+       
 
-  
+          <Route path="admin/employees/add" element={<AddEmployeePage />} />
+          <Route path="admin/implant-business" element={<AdminImplantBusinessPage />} />
+          <Route path="admin/implant-business/add" element={<AddImplantBusinessPage />} />
+        </Route>
 
 
         {/* /patients and nested create */}
+        <Route path="my-appointments" element={<PatientAppointmentsPage />} /> 
         <Route path="patients" element={<PatientsPage />} />
         <Route path="patients/profile" element={<ProfilePage />} />
 

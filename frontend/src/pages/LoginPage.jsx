@@ -12,7 +12,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (user) {
-      // Check roles and redirect
       if (user.role && user.role.includes('ADMIN')) {
         navigate('/admin', { replace: true });
       } else {
