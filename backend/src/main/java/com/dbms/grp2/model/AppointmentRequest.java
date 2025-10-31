@@ -20,7 +20,7 @@ public class AppointmentRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requestId;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "patient_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Patient patient;

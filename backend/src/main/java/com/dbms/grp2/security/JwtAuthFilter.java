@@ -8,25 +8,34 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-//import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final UserRepository userRepository;
     private final AuthUtil authUtil;
+    private final HandlerExceptionResolver exceptionResolver;
+
+    public JwtAuthFilter(UserRepository userRepository,
+                         AuthUtil authUtil,
+                         @Qualifier("handlerExceptionResolver") HandlerExceptionResolver exceptionResolver) {
+        this.userRepository = userRepository;
+        this.authUtil = authUtil;
+        this.exceptionResolver = exceptionResolver;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        try {
             log.info("incoming request: {}", request.getRequestURI());
 
             String path = request.getRequestURI();
@@ -53,6 +62,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-
+        } catch (Exception e) {
+            log.error("Authentication error during JWT processing: {}", e.getMessage(), e);
+            exceptionResolver.resolveException(request, response, null, e);
+        }
     }
 }

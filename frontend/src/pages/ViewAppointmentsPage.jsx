@@ -143,7 +143,7 @@ export default function ViewAppointmentsPage() {
                 </td>
                 <td>{app.patientEmailId}</td>
                 <td>{app.employeeEmailId}</td>
-                <td>{app.date ? new Date(app.date).toLocaleString() : '-'}</td>
+                <td>{app.date ? new Date(app.date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</td>
                 <td>{app.report || '-'}</td>
                 <td>{app.status || '-'}</td>
               </tr>
