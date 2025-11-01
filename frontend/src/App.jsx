@@ -38,7 +38,9 @@ import EditRawMaterialPage from './pages/EditRawMaterialPage.jsx';
 import AddEmployeePage from './pages/AddEmployeePage.jsx';
 import AdminImplantBusinessPage from './pages/AdminImplantBusinessPage.jsx';
 import AddImplantBusinessPage from './pages/AddImplantBusinessPage.jsx';
+import AdminCampEmployeePage from './pages/AdminCampEmployeePage.jsx';
 import DoctorRoute from './components/DoctorRoute.jsx'
+
 
 
 
@@ -73,6 +75,7 @@ export default function App() {
         <Route index element={<Dashboard />} />
 
         {/* /admin route */}
+
 
         <Route
         path="/"
@@ -109,6 +112,7 @@ export default function App() {
           <Route path="admin/employees/add" element={<AddEmployeePage />} />
           <Route path="admin/implant-business" element={<AdminImplantBusinessPage />} />
           <Route path="admin/implant-business/add" element={<AddImplantBusinessPage />} />
+           <Route path="admin/camp-employees" element={<AdminCampEmployeePage />} />
         </Route>
 
         {/* --- DOCTOR ROUTES (Protected by DoctorRoute) --- */}
