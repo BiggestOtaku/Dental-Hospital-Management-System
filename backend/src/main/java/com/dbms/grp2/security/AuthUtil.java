@@ -5,13 +5,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -52,7 +53,21 @@ public class AuthUtil {
         return getClaimsFromToken(token).getSubject();
     }
 
-    public java.util.List<String> getRolesFromToken(String token) {
-        return getClaimsFromToken(token).get("roles", java.util.List.class);
+    public List<String> getRolesFromToken(String token) { return getClaimsFromToken(token).get("roles", java.util.List.class); }
+
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()) return null;
+        User user = (User) authentication.getPrincipal();
+        return user.getId();
+    }
+
+    public Set<String> getCurrentUserRoles() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) return Set.of();
+
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
     }
 }

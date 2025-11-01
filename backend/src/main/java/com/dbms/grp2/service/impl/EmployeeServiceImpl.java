@@ -2,6 +2,7 @@ package com.dbms.grp2.service.impl;
 
 import com.dbms.grp2.dto.CreateEmployeeRequestDto;
 import com.dbms.grp2.dto.EmployeeDto;
+import com.dbms.grp2.dto.PublicDoctorDto;
 import com.dbms.grp2.dto.UpdateEmployeeDto;
 import com.dbms.grp2.mapper.EmployeeMapper;
 import com.dbms.grp2.model.Employee;
@@ -15,6 +16,7 @@ import com.dbms.grp2.service.EmployeeService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final UserRepository userRepository;
     private final HumanResourceRepository humanResourceRepository;
     private final EmployeeMapper employeeMapper;
+    private final ModelMapper modelMapper;
 
     @Override
     @Transactional
@@ -90,6 +93,16 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new EntityNotFoundException("Employee not found with email: " + emailId));
 
         return employeeMapper.toEmployeeDto(employee);
+    }
+
+    @Override
+    public Page<PublicDoctorDto> getAllDoctors(Pageable pageable) {
+        Page<Employee> employeePage = employeeRepository.findAll(pageable);
+        return employeePage.map(employee -> {
+            if(Objects.equals(employee.getHumanResource().getHrType(), "Doctor"))
+                return modelMapper.map(employee, PublicDoctorDto.class);
+            return null;
+        });
     }
 
 }

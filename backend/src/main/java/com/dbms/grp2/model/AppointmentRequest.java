@@ -20,7 +20,7 @@ public class AppointmentRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requestId;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "patient_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Patient patient;
@@ -34,6 +34,7 @@ public class AppointmentRequest {
     private LocalDate requestDate;
 
     @Column(nullable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public AppointmentRequest(Patient patient, Employee requestedDoctor, LocalDate requestDate) {

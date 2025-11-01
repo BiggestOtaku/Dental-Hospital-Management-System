@@ -1,43 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import api from '../services/api'; // Your configured Axios instance
+import api from '../services/api'; 
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function ViewAppointmentsPage() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // --- Pagination State ---
-  const [currentPage, setCurrentPage] = useState(0); // Spring Page is 0-indexed
+  const [currentPage, setCurrentPage] = useState(0); 
   const [totalPages, setTotalPages] = useState(0);
 
-  // --- 1. ADD STATE FOR SORTING ---
-  const [sortBy, setSortBy] = useState('date'); // Default sort column
-  const [sortDir, setSortDir] = useState('DESC'); // Default sort direction
+  const [sortBy, setSortBy] = useState('date');
+  const [sortDir, setSortDir] = useState('DESC'); 
 
   const [searchId, setSearchId] = useState('');
   const navigate = useNavigate();
   const handleSearchSubmit = (e) => {
-    e.preventDefault(); // Prevent form submission from reloading page
-    const idToNavigate = searchId.trim(); // Remove leading/trailing spaces
-    if (idToNavigate && !isNaN(idToNavigate)) { // Check if it's a non-empty number
+    e.preventDefault(); 
+    const idToNavigate = searchId.trim(); 
+    if (idToNavigate && !isNaN(idToNavigate)) { 
       navigate(`/admin/appointments/${idToNavigate}`);
     } else {
       alert('Please enter a valid Appointment ID (number).');
-      setSearchId(''); // Clear invalid input
+      setSearchId(''); 
     }
   };
 
-  // 2. UPDATE fetchAppointments TO ACCEPT SORT PARAMETERS
   async function fetchAppointments(page = 0, currentSortBy = sortBy, currentSortDir = sortDir) {
     try {
       setLoading(true);
       setError(null);
 
-      // Construct the sort parameter string (e.g., "date,desc")
       const sortParam = `${currentSortBy},${currentSortDir.toLowerCase()}`;
       
-      // Add both page and sort parameters to the URL
       const response = await api.get(`/admin/appointments?page=${page}&sort=${sortParam}`);
       
       setAppointments(response.data.content || []);
@@ -52,43 +46,32 @@ export default function ViewAppointmentsPage() {
     }
   }
 
-  // Fetch data on initial load and whenever sort changes
   useEffect(() => {
-    // We pass the current sort state here
     fetchAppointments(0, sortBy, sortDir);
-  }, [sortBy, sortDir]); // 👈 3. RE-FETCH WHEN SORT CHANGES
+  }, [sortBy, sortDir]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
-      // Pass current sort state when changing page
       fetchAppointments(currentPage + 1, sortBy, sortDir);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 0) {
-      // Pass current sort state when changing page
       fetchAppointments(currentPage - 1, sortBy, sortDir);
     }
   };
 
-  // --- 4. ADD HANDLER FOR SORTING ---
   const handleSort = (column) => {
-    // If clicking the same column, toggle direction
     if (column === sortBy) {
       const newSortDir = sortDir === 'ASC' ? 'DESC' : 'ASC';
       setSortDir(newSortDir);
-      // setSortBy(column); // Not needed as it's the same column
-      // useEffect will trigger the fetch
     } else {
-      // If clicking a new column, sort by it descending by default
       setSortBy(column);
       setSortDir('DESC');
-      // useEffect will trigger the fetch
     }
   };
 
-  // --- Render Logic ---
 
   if (loading) {
     return <div className="container"><h3>Loading appointments...</h3></div>;
@@ -100,10 +83,9 @@ export default function ViewAppointmentsPage() {
     </div>;
   }
 
-  // Helper function to show sort indicators
   const getSortIndicator = (column) => {
-    if (column !== sortBy) return null; // No indicator if not sorted by this column
-    return sortDir === 'ASC' ? ' ▲' : ' ▼'; // Up or down arrow
+    if (column !== sortBy) return null; 
+    return sortDir === 'ASC' ? ' ▲' : ' ▼';
   };
 
   return (
@@ -117,7 +99,7 @@ export default function ViewAppointmentsPage() {
       </div>
       <form onSubmit={handleSearchSubmit} className="input-group mb-3">
         <input
-          type="search" // Use type="search" for better semantics
+          type="search" 
           className="form-control"
           placeholder="Search by Appointment ID..."
           aria-label="Search Appointment ID"
@@ -132,7 +114,6 @@ export default function ViewAppointmentsPage() {
       <table className="table table-striped table-hover">
         <thead>
           <tr>
-            {/* Make headers clickable for sorting */}
             <th onClick={() => handleSort('appointmentId')} style={{ cursor: 'pointer' }}>
               Appt ID{getSortIndicator('appointmentId')}
             </th>
@@ -142,11 +123,10 @@ export default function ViewAppointmentsPage() {
             <th>
               Doctor Email ID
             </th>
-            {/* 5. MAKE DATE HEADER CLICKABLE */}
             <th onClick={() => handleSort('date')} style={{ cursor: 'pointer' }}>
               Date{getSortIndicator('date')}
             </th>
-            <th>Report</th> {/* Not sortable in this example */}
+            <th>Report</th> 
             <th onClick={() => handleSort('status')} style={{ cursor: 'pointer' }}>
               Status{getSortIndicator('status')}
             </th>
@@ -163,7 +143,7 @@ export default function ViewAppointmentsPage() {
                 </td>
                 <td>{app.patientEmailId}</td>
                 <td>{app.employeeEmailId}</td>
-                <td>{app.date ? new Date(app.date).toLocaleString() : '-'}</td>
+                <td>{app.date ? new Date(app.date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</td>
                 <td>{app.report || '-'}</td>
                 <td>{app.status || '-'}</td>
               </tr>
@@ -176,7 +156,6 @@ export default function ViewAppointmentsPage() {
         </tbody>
       </table>
 
-      {/* Pagination controls (unchanged) */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <p className="text-muted">
           Page <strong>{currentPage + 1}</strong> of <strong>{totalPages}</strong>

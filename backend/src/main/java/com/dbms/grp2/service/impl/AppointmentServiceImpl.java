@@ -1,7 +1,6 @@
 package com.dbms.grp2.service.impl;
 
 import com.dbms.grp2.dto.AppointmentDetailDto;
-import com.dbms.grp2.dto.AppointmentDetailDto;
 import com.dbms.grp2.dto.AppointmentRequestDto;
 import com.dbms.grp2.dto.UpdateAppointmentDto;
 import com.dbms.grp2.model.Appointment;
@@ -9,6 +8,7 @@ import com.dbms.grp2.model.AppointmentRequest;
 import com.dbms.grp2.model.Employee;
 import com.dbms.grp2.model.Patient;
 import com.dbms.grp2.repository.AppointmentRepository;
+import com.dbms.grp2.repository.AppointmentRequestRepository;
 import com.dbms.grp2.repository.EmployeeRepository;
 import com.dbms.grp2.repository.PatientRepository;
 import com.dbms.grp2.service.AppointmentService;
@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final PatientRepository patientRepository;
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
+    private final AppointmentRequestRepository appointmentRequestRepository;
 
     @Transactional
     public Appointment createNewAppointment(Appointment appointment, Long doctorId, Long patientId) {
@@ -122,17 +124,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         dto.setPaymentMode(appointment.getPaymentMode());
         dto.setStatus(appointment.getStatus());
         dto.setReport(appointment.getReport());
-        dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
+        dto.setPatientId(appointment.getPatient().getPatientId());
         dto.setPatientEmailId(appointment.getPatient().getEmailId());
-
-        if (appointment.getPatient() != null) {
-            dto.setPatientId(appointment.getPatient().getPatientId());
-            dto.setPatientEmailId(appointment.getPatient().getEmailId());
-        }
-        if (appointment.getEmployee() != null) {
-            dto.setEmployeeId(appointment.getEmployee().getEmployeeId());
-            dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
-        }
+        dto.setEmployeeId(appointment.getEmployee().getEmployeeId());
+        dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
 
         return Optional.of(dto);
     }
@@ -145,6 +140,8 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentDetailDto dto = modelMapper.map(appointment, AppointmentDetailDto.class);
             dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
             dto.setPatientEmailId(appointment.getPatient().getEmailId());
+            dto.setPatientId(appointment.getPatient().getPatientId());
+            dto.setEmployeeId(appointment.getEmployee().getEmployeeId());
             return dto;
         });
     }
@@ -154,10 +151,32 @@ public class AppointmentServiceImpl implements AppointmentService {
         Patient patient = patientRepository.findById(appointmentRequestDto.getPatientId()).orElseThrow(() -> new IllegalArgumentException("Patient not found"));
         Employee doctor = employeeRepository.findById(appointmentRequestDto.getDoctorId()).orElseThrow(() -> new IllegalArgumentException("Doctor not found"));
 
-        if(!Objects.equals(doctor.getHumanResource().getHrType(), "doctor"))
+        if(!Objects.equals(doctor.getHumanResource().getHrType(), "Doctor"))
             throw new IllegalArgumentException("Employee is not a Doctor");
 
-//        AppointmentRequest appointmentRequest = AppointmentRequest.builder()
-//                .
+        AppointmentRequest appointmentRequest = AppointmentRequest.builder()
+                .patient(patient)
+                .requestedDoctor(doctor)
+                .requestDate(LocalDate.now())
+                .build();
+
+        appointmentRequestRepository.save(appointmentRequest);
+    }
+
+    @Override
+    public Page<AppointmentDetailDto> getAppointmentsByDoctorId(Long doctorId, String search, Pageable pageable) {
+        Page<Appointment> appointments = appointmentRepository.findByEmployeeEmployeeId(doctorId, pageable);
+        if (search != null && !search.trim().isEmpty()) {
+            appointments = appointmentRepository.findAppointmentsByDoctorWithSearch(doctorId, search.trim(), pageable);
+        }
+
+        return appointments.map(appointment -> {
+            AppointmentDetailDto dto = modelMapper.map(appointment, AppointmentDetailDto.class);
+            dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
+            dto.setPatientEmailId(appointment.getPatient().getEmailId());
+            dto.setPatientId(appointment.getPatient().getPatientId());
+            dto.setEmployeeId(appointment.getEmployee().getEmployeeId());
+            return dto;
+        });
     }
 }

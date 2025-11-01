@@ -1,7 +1,6 @@
 package com.dbms.grp2.service;
 
 import com.dbms.grp2.dto.AppointmentDetailDto;
-import com.dbms.grp2.dto.AppointmentDetailDto;
 import com.dbms.grp2.dto.AppointmentRequestDto;
 import com.dbms.grp2.dto.UpdateAppointmentDto;
 import com.dbms.grp2.model.Appointment;
@@ -17,4 +16,6 @@ public interface AppointmentService {
     Optional<AppointmentDetailDto> getAppointmentById(Long appointmentId);
     Page<AppointmentDetailDto> getAppointmentsByPatientId(Long patientId, Pageable pageable);
     void requestAppointment(AppointmentRequestDto appointmentRequestDto);
+
+    Page<AppointmentDetailDto> getAppointmentsByDoctorId(Long doctorId, String search, Pageable pageable);
 }
