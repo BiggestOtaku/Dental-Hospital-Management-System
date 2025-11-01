@@ -1,6 +1,8 @@
-package com.dbms.grp2.service.implementation;
+package com.dbms.grp2.service.impl;
 
+import com.dbms.grp2.dto.CampDetailDto;
 import com.dbms.grp2.dto.CampEmployeeAssociationDto;
+import com.dbms.grp2.model.Camp;
 import com.dbms.grp2.model.CampEmployee;
 import com.dbms.grp2.model.Employee;
 import com.dbms.grp2.repository.CampEmployeeRepository;
@@ -9,6 +11,9 @@ import com.dbms.grp2.repository.EmployeeRepository;
 import com.dbms.grp2.service.CampEmployeeService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +26,7 @@ public class CampEmployeeServiceImpl implements CampEmployeeService {
     private final CampRepository campRepository;
     private final EmployeeRepository employeeRepository;
     private final CampEmployeeRepository campEmployeeRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public CampEmployeeAssociationDto addEmployeeToCamp(Long campId, String emailId) {
@@ -61,5 +67,11 @@ public class CampEmployeeServiceImpl implements CampEmployeeService {
                 .map(CampEmployee::getEmployee) // Get the associated Employee object
                 .map(Employee::getEmailId)       // Get the email from that object
                 .collect(Collectors.toList());
+    }
+    @Override
+    public Page<CampDetailDto> getCampsForEmployee(Long employeeId, Pageable pageable) {
+        Page<Camp> campPage = campRepository.findCampsByEmployeeId(employeeId, pageable);
+
+        return campPage.map(camp -> modelMapper.map(camp, CampDetailDto.class));
     }
 }

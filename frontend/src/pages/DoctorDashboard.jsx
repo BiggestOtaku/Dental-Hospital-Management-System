@@ -29,6 +29,17 @@ export default function DoctorDashboard() {
             </div>
           </div>
         </div>
+        <div className="col-md-4 mb-4">
+          <div className="card shadow-sm h-100">
+            <div className="card-body">
+              <h5 className="card-title">My Assigned Camps</h5>
+              <p className="card-text">Check dates and locations for upcoming camps.</p>
+              <Link to="/doctor/camps" className="btn btn-success">
+                View Camps
+              </Link>
+            </div>
+          </div>
+        </div>
 
         <div className="col-md-4 mb-4">
           <div className="card shadow-sm h-100">

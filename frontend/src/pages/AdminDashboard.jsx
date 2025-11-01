@@ -147,6 +147,12 @@ export default function AdminDashboardPage() {
         >
           Manage Camp Employees
         </Link>
+        <Link
+          to="/admin/camp-patients/add"
+          className="list-group-item list-group-item-action"
+        >
+          Add Patient to Camp
+        </Link>
       </div>
     </div>
   );

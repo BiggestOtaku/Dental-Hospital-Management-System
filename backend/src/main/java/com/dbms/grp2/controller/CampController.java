@@ -1,9 +1,11 @@
 package com.dbms.grp2.controller;
 
+import com.dbms.grp2.dto.CampAttendeeAssociationDto;
 import com.dbms.grp2.dto.CampDTO;
 import com.dbms.grp2.dto.CampEmployeeAssociationDto;
 import com.dbms.grp2.dto.CampResponseDTO;
 import com.dbms.grp2.model.Camp;
+import com.dbms.grp2.service.CampAttendeeService;
 import com.dbms.grp2.service.CampService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,7 @@ public class CampController {
 
     private final CampService campService;
     private final CampEmployeeService campEmployeeService;
+    private final CampAttendeeService campAttendeeService;
 
     @PostMapping("/add-camp")
     public ResponseEntity<Camp> addCamp(@RequestBody CampDTO campDTO) {
@@ -52,5 +55,18 @@ public class CampController {
 
         CampEmployeeAssociationDto newAssociation = campEmployeeService.addEmployeeToCamp(campId, emailId);
         return new ResponseEntity<>(newAssociation, HttpStatus.CREATED);
+    }
+    @PostMapping("/add-patient-to-camp/{campId}/{emailId}")
+    public ResponseEntity<CampAttendeeAssociationDto> addPatientToCamp(
+            @PathVariable("campId") Long campId,
+            @PathVariable("emailId") String emailId) {
+
+        CampAttendeeAssociationDto newAssociation = campAttendeeService.addPatientToCamp(campId, emailId);
+        return new ResponseEntity<>(newAssociation, HttpStatus.CREATED);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handleIllegalState(IllegalStateException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }

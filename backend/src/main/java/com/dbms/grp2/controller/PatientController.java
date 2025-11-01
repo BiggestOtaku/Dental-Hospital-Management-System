@@ -1,12 +1,12 @@
 package com.dbms.grp2.controller;
 
-import com.dbms.grp2.dto.ChangePasswordDto;
-import com.dbms.grp2.dto.PatientCreateDto;
-import com.dbms.grp2.dto.PatientDto;
-import com.dbms.grp2.dto.PatientUpdateDto;
+import com.dbms.grp2.dto.*;
 import com.dbms.grp2.security.AuthService;
+import com.dbms.grp2.service.CampService;
 import com.dbms.grp2.service.PatientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +20,7 @@ public class PatientController {
 
     private final PatientService patientService;
     private final AuthService authService;
+    private final CampService campService;
 
     @GetMapping
     public ResponseEntity<List<PatientDto>> findAll(){
@@ -29,6 +30,11 @@ public class PatientController {
     @GetMapping("/{id}")
     public ResponseEntity<PatientDto> findPatientById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(patientService.getPatientById(id));
+    }
+    @GetMapping("/camps")
+    public ResponseEntity<Page<CampResponseDTO>> getAllCamps(Pageable pageable) {
+        Page<CampResponseDTO> camps = campService.getAllCamps(pageable);
+        return ResponseEntity.ok(camps);
     }
 
     @PostMapping

@@ -11,7 +11,7 @@ export default function Dashboard() {
       <p>This is your personalized dashboard for the Dental Hospital Management System.</p>
 
       <div className="row mt-5">
-        
+
         <div className="col-md-4 mb-4">
           <div className="card shadow-sm h-100">
             <div className="card-body">
@@ -31,6 +31,17 @@ export default function Dashboard() {
               <p className="card-text">Update your personal and contact information.</p>
               <Link to="/patients/profile" className="btn btn-primary">
                 View/Edit Profile
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4 mb-4">
+          <div className="card shadow-sm h-100">
+            <div className="card-body">
+              <h5 className="card-title">View Health Camps</h5>
+              <p className="card-text">See upcoming free medical and dental camps.</p>
+              <Link to="/patients/camps" className="btn btn-success">
+                View Camps
               </Link>
             </div>
           </div>
