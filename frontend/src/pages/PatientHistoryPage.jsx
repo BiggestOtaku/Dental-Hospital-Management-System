@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
 
-
 export default function PatientHistoryPage() {
   const { patientId } = useParams();
   const [history, setHistory] = useState([]);
@@ -36,29 +35,32 @@ export default function PatientHistoryPage() {
     fetchHistory();
   }, [fetchHistory]);
 
-
-  if (loading) return <div className="text-center mt-10 text-lg">Loading history for {patientName}...</div>;
-  if (error) return <div className="alert alert-danger p-4 bg-red-100 text-red-700 mt-10">{error}</div>;
+  if (loading) return <div className="text-center mt-5 fs-5">Loading history for {patientName}...</div>;
+  if (error) return <div className="alert alert-danger mt-4 p-3">{error}</div>;
 
   return (
-    <div className="max-w-6xl mx-auto mt-5 p-6 bg-white rounded-xl shadow-lg">
-      <h2 className="text-3xl font-bold text-gray-800 mb-2">Appointment History</h2>
-      <p className="text-xl text-indigo-600 mb-6 font-medium">Viewing Records for: {patientName}</p>
+    <div className="container mt-4 p-4 bg-white rounded shadow">
+      <h2 className="h3 fw-bold text-dark mb-2">Appointment History</h2>
+      <p className="fs-5 text-primary mb-4 fw-semibold">Viewing Records for: {patientName}</p>
 
       {history.length === 0 && (
-        <div className="alert alert-info p-4 bg-blue-100 text-blue-700 rounded-lg">No past appointments found for this patient.</div>
+        <div className="alert alert-info p-3">No past appointments found for this patient.</div>
       )}
 
       {history.length > 0 && (
-        <div className="space-y-4">
+        <div className="d-flex flex-column gap-3">
           {history.map((record, index) => (
-            <div key={record.appointmentId} className="p-4 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors shadow-sm">
-              <div className="flex justify-between items-start">
+            <div key={record.appointmentId} className="p-3 border rounded bg-light shadow-sm">
+              <div className="d-flex justify-content-between align-items-start">
                 <div>
-                  <p className="text-lg font-semibold text-gray-900 mb-1">Appointment on {record.date}</p>
-                  <p className="text-sm text-gray-600">Treated by: {record.employeeEmailId}</p>
-                  <p className="text-sm text-gray-600">Diagnosis/Report: <span className="font-medium text-gray-800">{record.report}</span></p>
-                  <p className="text-sm text-gray-600">Amount: <span className="font-medium text-gray-800">₹{record.amount}</span></p>
+                  <p className="fs-6 fw-semibold text-dark mb-1">Appointment on {record.date}</p>
+                  <p className="text-muted small mb-1">Treated by: {record.employeeEmailId}</p>
+                  <p className="text-muted small mb-1">
+                    Diagnosis/Report: <span className="fw-medium text-dark">{record.report}</span>
+                  </p>
+                  <p className="text-muted small mb-0">
+                    Amount: <span className="fw-medium text-dark">₹{record.amount}</span>
+                  </p>
                 </div>
               </div>
             </div>

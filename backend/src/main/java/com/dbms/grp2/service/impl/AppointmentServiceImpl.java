@@ -1,7 +1,6 @@
 package com.dbms.grp2.service.impl;
 
 import com.dbms.grp2.dto.AppointmentDetailDto;
-import com.dbms.grp2.dto.AppointmentDetailDto;
 import com.dbms.grp2.dto.AppointmentRequestDto;
 import com.dbms.grp2.dto.UpdateAppointmentDto;
 import com.dbms.grp2.model.Appointment;
@@ -165,8 +164,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Page<AppointmentDetailDto> getAppointmentsByDoctorId(Long doctorId, Pageable pageable) {
+    public Page<AppointmentDetailDto> getAppointmentsByDoctorId(Long doctorId, String search, Pageable pageable) {
         Page<Appointment> appointments = appointmentRepository.findByEmployeeEmployeeId(doctorId, pageable);
+        if (search != null && !search.trim().isEmpty()) {
+            appointments = appointmentRepository.findAppointmentsByDoctorWithSearch(doctorId, search.trim(), pageable);
+        }
 
         return appointments.map(appointment -> {
             AppointmentDetailDto dto = modelMapper.map(appointment, AppointmentDetailDto.class);

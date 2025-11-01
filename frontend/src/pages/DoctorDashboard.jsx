@@ -9,16 +9,15 @@ export default function DoctorDashboard() {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-xl rounded-2xl">
-      <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
+    <div className="container mt-5 p-4 bg-white shadow rounded">
+      <h1 className="display-5 fw-bold text-dark mb-3">
         Welcome, Doc!
       </h1>
-      <p className="text-lg text-gray-600 mb-8">
+      <p className="fs-5 text-muted mb-4">
         Your current tasks and performance metrics are summarized below.
       </p>
 
-      <div className="row mt-5">
-        
+      <div className="row mt-4">
         <div className="col-md-4 mb-4">
           <div className="card shadow-sm h-100">
             <div className="card-body">
@@ -42,9 +41,7 @@ export default function DoctorDashboard() {
             </div>
           </div>
         </div>
-
       </div>
-      
     </div>
   );
 }

@@ -45,11 +45,12 @@ public class AppointmentController {
     @GetMapping("/doctor/{doctorId}")
     public ResponseEntity<Page<AppointmentDetailDto>> getAppointmentsByDoctorId(
             @PathVariable Long doctorId,
+            @RequestParam(required = false) String search,
             @PageableDefault(sort = "date", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         if(!authUtil.getCurrentUserId().equals(doctorId) && !authUtil.getCurrentUserRoles().contains("ROLE_ADMIN"))
             throw new AccessDeniedException("You are not allowed to view other doctors' appointments.");
 
-        return ResponseEntity.ok(appointmentService.getAppointmentsByDoctorId(doctorId, pageable));
+        return ResponseEntity.ok(appointmentService.getAppointmentsByDoctorId(doctorId, search, pageable));
     }
 }
