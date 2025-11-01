@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,6 +30,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+//    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 //
 //    /**
 //     * This bean provides the global CORS configuration.
@@ -57,13 +59,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Enable the CorsConfigurationSource bean defined above
-                .cors(Customizer.withDefaults())
-
-                // Disable CSRF protection (not needed for a stateless JWT API)
                 .csrf(AbstractHttpConfigurer::disable)
-
-                // Set the session management to STATELESS (don't use cookies)
                 .sessionManagement(sessionconfig ->
                         sessionconfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(Customizer.withDefaults())
@@ -72,26 +68,15 @@ public class SecurityConfig {
                         .requestMatchers("/public/**", "/error", "/auth/**").permitAll()
                         .requestMatchers("/patients/**").hasAnyRole("ADMIN", "PATIENT")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/patients/**").hasAnyRole("ADMIN", "PATIENT")
                         .requestMatchers("/doctors/**").hasAnyRole("DOCTOR", "ADMIN")
-
-                        // 4. Any other request must be authenticated
                         .anyRequest().authenticated()
                 )
-
-                // Add your custom JWT filter before the standard login filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-
-                // Disable the default HTTP Basic login form
                 .httpBasic(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
 
-    /**
-     * Exposes the AuthenticationManager as a Bean so it can be
-     * injected into your AuthService for the /login endpoint.
-     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();

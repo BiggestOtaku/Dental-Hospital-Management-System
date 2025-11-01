@@ -19,25 +19,16 @@ export default function Header() {
           <Link to="/" style={{textDecoration:'none', color:'inherit'}}>
             <div style={{fontWeight:700}}>Dental HMS</div>
           </Link>
-
-          <nav style={{display:'flex', gap:8, alignItems:'center'}}>
-            <Link to="/patients" className="btn btn-sm btn-outline-secondary">Patients</Link>
-          </nav>
         </div>
 
         <div style={{display:'flex', gap:12, alignItems:'center'}}>
-          <div style={{fontSize:14}} className="text-muted">
+          {/* <div style={{fontSize:14}} className="text-muted">
             {user ? `${user.role ?? 'User'}` : 'Not signed in'}
-          </div>
+          </div> */}
           {user ? (
             <button className="btn btn-sm btn-outline-danger" onClick={handleLogout}>Logout</button>
           ) : (
             <Link to="/login" className="btn btn-sm btn-primary">Login</Link>
-          )}
-          {user ? (
-            <button className="btn btn-sm btn-outline-primary" onClick={() => navigate('patients/profile')}>Profile</button>
-          ) : (
-            <></>
           )}
         </div>
       </div>

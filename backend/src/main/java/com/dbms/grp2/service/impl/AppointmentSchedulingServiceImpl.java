@@ -109,8 +109,13 @@ public class AppointmentSchedulingServiceImpl implements AppointmentSchedulingSe
         cleanupOldRequests();
     }
 
-    private void assignToDoctorAndMove(AppointmentRequest request, Employee doctor, LocalDate date, Map<Long, LocalTime> doctorNextSlot, Map<Long, Integer> doctorLoad) {
-
+    private void assignToDoctorAndMove(
+            AppointmentRequest request,
+            Employee doctor,
+            LocalDate date,
+            Map<Long, LocalTime> doctorNextSlot,
+            Map<Long, Integer> doctorLoad
+    ) {
         AppointmentRequest reassignedRequest = new AppointmentRequest(request.getPatient(), doctor, date);
         createAppointment(reassignedRequest, doctorNextSlot);
         doctorLoad.put(doctor.getEmployeeId(), doctorLoad.get(doctor.getEmployeeId()) + 1);
