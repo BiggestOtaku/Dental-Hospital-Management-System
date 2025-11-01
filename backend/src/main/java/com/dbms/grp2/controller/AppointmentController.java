@@ -26,7 +26,8 @@ public class AppointmentController {
             @PathVariable Long patientId,
             @PageableDefault(sort = "date", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        if(!authUtil.getCurrentUserId().equals(patientId) && !authUtil.getCurrentUserRoles().contains("ROLE_ADMIN"))
+        if(!authUtil.getCurrentUserId().equals(patientId) &&
+                !(authUtil.getCurrentUserRoles().contains("ROLE_ADMIN") || authUtil.getCurrentUserRoles().contains("ROLE_DOCTOR")))
             throw new AccessDeniedException("You are not allowed to view other patients' appointments.");
 
         return ResponseEntity.ok(appointmentService.getAppointmentsByPatientId(patientId, pageable));
@@ -39,5 +40,16 @@ public class AppointmentController {
 
         appointmentService.requestAppointment(dto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<Page<AppointmentDetailDto>> getAppointmentsByDoctorId(
+            @PathVariable Long doctorId,
+            @PageableDefault(sort = "date", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        if(!authUtil.getCurrentUserId().equals(doctorId) && !authUtil.getCurrentUserRoles().contains("ROLE_ADMIN"))
+            throw new AccessDeniedException("You are not allowed to view other doctors' appointments.");
+
+        return ResponseEntity.ok(appointmentService.getAppointmentsByDoctorId(doctorId, pageable));
     }
 }

@@ -141,6 +141,8 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentDetailDto dto = modelMapper.map(appointment, AppointmentDetailDto.class);
             dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
             dto.setPatientEmailId(appointment.getPatient().getEmailId());
+            dto.setPatientId(appointment.getPatient().getPatientId());
+            dto.setEmployeeId(appointment.getEmployee().getEmployeeId());
             return dto;
         });
     }
@@ -160,5 +162,19 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .build();
 
         appointmentRequestRepository.save(appointmentRequest);
+    }
+
+    @Override
+    public Page<AppointmentDetailDto> getAppointmentsByDoctorId(Long doctorId, Pageable pageable) {
+        Page<Appointment> appointments = appointmentRepository.findByEmployeeEmployeeId(doctorId, pageable);
+
+        return appointments.map(appointment -> {
+            AppointmentDetailDto dto = modelMapper.map(appointment, AppointmentDetailDto.class);
+            dto.setEmployeeEmailId(appointment.getEmployee().getEmailId());
+            dto.setPatientEmailId(appointment.getPatient().getEmailId());
+            dto.setPatientId(appointment.getPatient().getPatientId());
+            dto.setEmployeeId(appointment.getEmployee().getEmployeeId());
+            return dto;
+        });
     }
 }

@@ -8,4 +8,6 @@ import org.springframework.data.repository.Repository;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     Page<Appointment> findByPatientPatientId(Long patientId, Pageable pageable);
+
+    Page<Appointment> findByEmployeeEmployeeId(Long doctorId, Pageable pageable);
 }

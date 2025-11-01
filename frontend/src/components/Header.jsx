@@ -22,9 +22,9 @@ export default function Header() {
         </div>
 
         <div style={{display:'flex', gap:12, alignItems:'center'}}>
-          <div style={{fontSize:14}} className="text-muted">
+          {/* <div style={{fontSize:14}} className="text-muted">
             {user ? `${user.role ?? 'User'}` : 'Not signed in'}
-          </div>
+          </div> */}
           {user ? (
             <button className="btn btn-sm btn-outline-danger" onClick={handleLogout}>Logout</button>
           ) : (

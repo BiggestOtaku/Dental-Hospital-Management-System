@@ -4,6 +4,9 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import Dashboard from './pages/Dashboard';
+import DoctorDashboard from './pages/DoctorDashboard.jsx';
+import DoctorAppointmentsPage from './pages/DoctorAppointmentsPage.jsx';
+import PatientHistoryPage from './pages/PatientHistoryPage.jsx';
 import PatientsPage from './pages/PatientsPage';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
@@ -35,6 +38,10 @@ import EditRawMaterialPage from './pages/EditRawMaterialPage.jsx';
 import AddEmployeePage from './pages/AddEmployeePage.jsx';
 import AdminImplantBusinessPage from './pages/AdminImplantBusinessPage.jsx';
 import AddImplantBusinessPage from './pages/AddImplantBusinessPage.jsx';
+import DoctorRoute from './components/DoctorRoute.jsx'
+
+
+
 function Layout() {
   return (
     <div className="app-shell">
@@ -104,9 +111,26 @@ export default function App() {
           <Route path="admin/implant-business/add" element={<AddImplantBusinessPage />} />
         </Route>
 
+        {/* --- DOCTOR ROUTES (Protected by DoctorRoute) --- */}
+        <Route
+          path="/"
+          element={
+            <DoctorRoute>
+              <Outlet />
+            </DoctorRoute>
+          }
+        >
+          <Route path="doctor" element={<DoctorDashboard />} /> 
+          <Route path="doctor/appointments" element={<DoctorAppointmentsPage />} />
+          <Route path="doctor/appointments/:id" element={<AppointmentDetailPage />} />
+          <Route path="doctor/profile" element={<ProfilePage />} />
+          <Route path="/doctor/patients/:patientId/history" element={<PatientHistoryPage />} />
+
+        </Route>
+
 
         {/* /patients and nested create */}
-        <Route path="my-appointments" element={<PatientAppointmentsPage />} /> 
+        <Route path="patients/my-appointments" element={<PatientAppointmentsPage />} /> 
         <Route path="patients" element={<PatientsPage />} />
         <Route path="patients/profile" element={<ProfilePage />} />
 

@@ -14,6 +14,8 @@ export default function LoginPage() {
     if (user) {
       if (user.role && user.role.includes('ADMIN')) {
         navigate('/admin', { replace: true });
+      } else if(user.role && user.role.includes('DOCTOR')) {
+        navigate('/doctor', {replace: true});
       } else {
         navigate('/', { replace: true });
       }
@@ -27,13 +29,6 @@ export default function LoginPage() {
       const res = await api.post('/auth/login', { emailId, password });
       const userData = res.data;
       login(userData);
-      if (userData.role && userData.role.includes('ADMIN')) {
-        // If user is an ADMIN, go to /admin
-        navigate('/admin', { replace: true });
-      } else {
-        // Otherwise, go to the default dashboard
-        navigate('/', { replace: true });
-      }
     } catch (err) {
       console.error(err);
       alert(err?.response?.data?.message || 'Login failed');

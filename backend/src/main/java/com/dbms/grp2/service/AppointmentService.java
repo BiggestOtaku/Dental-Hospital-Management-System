@@ -17,4 +17,6 @@ public interface AppointmentService {
     Optional<AppointmentDetailDto> getAppointmentById(Long appointmentId);
     Page<AppointmentDetailDto> getAppointmentsByPatientId(Long patientId, Pageable pageable);
     void requestAppointment(AppointmentRequestDto appointmentRequestDto);
+
+    Page<AppointmentDetailDto> getAppointmentsByDoctorId(Long doctorId, Pageable pageable);
 }

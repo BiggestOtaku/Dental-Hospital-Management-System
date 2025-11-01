@@ -17,7 +17,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const status = error?.response?.status;
-    if (status === 401) {
+    if (status === 401 && error?.response?.data?.message.startsWith("Invalid JWT token: ")) {
       try {
         localStorage.removeItem('dhms_token');
         localStorage.removeItem('dhms_user');

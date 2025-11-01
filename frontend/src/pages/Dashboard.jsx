@@ -17,7 +17,7 @@ export default function Dashboard() {
             <div className="card-body">
               <h5 className="card-title">Manage Appointments</h5>
               <p className="card-text">View status of past and future appointments, or request a new one.</p>
-              <Link to="/my-appointments" className="btn btn-primary">
+              <Link to="/patients/my-appointments" className="btn btn-primary">
                 View Appointments
               </Link>
             </div>
