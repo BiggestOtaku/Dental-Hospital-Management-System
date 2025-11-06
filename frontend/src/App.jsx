@@ -38,8 +38,11 @@ import EditRawMaterialPage from './pages/EditRawMaterialPage.jsx';
 import AddEmployeePage from './pages/AddEmployeePage.jsx';
 import AdminImplantBusinessPage from './pages/AdminImplantBusinessPage.jsx';
 import AddImplantBusinessPage from './pages/AddImplantBusinessPage.jsx';
-import DoctorRoute from './components/DoctorRoute.jsx'
-
+import AdminCampEmployeePage from './pages/AdminCampEmployeePage.jsx';
+import DoctorRoute from './components/DoctorRoute.jsx';
+import DoctorCampsPage from './pages/DoctorCampsPage.jsx';
+import AddCampPatientPage from './pages/AddCampPatientPage.jsx';
+import PatientCampsPage from './pages/PatientCampsPage.jsx';
 
 
 function Layout() {
@@ -109,7 +112,10 @@ export default function App() {
           <Route path="admin/employees/add" element={<AddEmployeePage />} />
           <Route path="admin/implant-business" element={<AdminImplantBusinessPage />} />
           <Route path="admin/implant-business/add" element={<AddImplantBusinessPage />} />
-        </Route>
+          <Route path="admin/camp-employees" element={<AdminCampEmployeePage />} />
+          <Route path="admin/camp-patients/add" element={<AddCampPatientPage />} />
+        </Route>        
+
 
         {/* --- DOCTOR ROUTES (Protected by DoctorRoute) --- */}
         <Route
@@ -125,6 +131,7 @@ export default function App() {
           <Route path="doctor/appointments/:id" element={<AppointmentDetailPage />} />
           <Route path="doctor/profile" element={<ProfilePage />} />
           <Route path="/doctor/patients/:patientId/history" element={<PatientHistoryPage />} />
+          <Route path="doctor/camps" element={<DoctorCampsPage />} />
 
         </Route>
 
@@ -133,6 +140,7 @@ export default function App() {
         <Route path="patients/my-appointments" element={<PatientAppointmentsPage />} /> 
         <Route path="patients" element={<PatientsPage />} />
         <Route path="patients/profile" element={<ProfilePage />} />
+        <Route path="patients/camps" element={<PatientCampsPage />} />
 
       </Route>
 
