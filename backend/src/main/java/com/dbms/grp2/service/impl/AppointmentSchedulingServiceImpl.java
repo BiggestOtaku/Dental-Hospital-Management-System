@@ -37,7 +37,7 @@ public class AppointmentSchedulingServiceImpl implements AppointmentSchedulingSe
         List<AppointmentRequest> requests = requestRepository.findByRequestDateOrderByCreatedAtAsc(date);
         if (requests.isEmpty()) {
             log.warn("No appointment requests found for {}. No action taken.", date);
-            cleanupOldRequests(); // Still clean up old requests even if there are none for the target date.
+            cleanupOldRequests();
             return;
         }
         List<Employee> allDoctors = employeeRepository.findByHumanResourceHrType("doctor");

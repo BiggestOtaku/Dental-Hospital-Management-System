@@ -14,4 +14,7 @@ public class CampResponseDTO {
     private String state;
     private Long attendeeCount;
     private TransactionSummaryDTO transaction;
+
+    private String addressDescription;
+    private int pin;
 }

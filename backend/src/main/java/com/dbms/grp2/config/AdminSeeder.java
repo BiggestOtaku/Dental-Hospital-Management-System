@@ -26,7 +26,7 @@ public class AdminSeeder implements CommandLineRunner {
                     .roles(Set.of(Role.ADMIN))
                     .build();
             userRepository.save(admin);
-            System.out.println("✅ Default admin created: admin@dbms.com / admin123");
+            System.out.println("Default admin created: admin@dbms.com / admin123");
         }
     }
 }

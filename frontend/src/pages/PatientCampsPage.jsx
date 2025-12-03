@@ -21,6 +21,7 @@ export default function PatientCampsPage() {
    const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     try {
+      // Assuming dateString is 'YYYY-MM-DD'
       return new Date(dateString + 'T00:00:00Z').toLocaleDateString();
     } catch (e) { return 'Invalid Date'; }
   };
@@ -90,9 +91,13 @@ export default function PatientCampsPage() {
       <table className="table table-striped table-hover">
         <thead>
           <tr>
+            {/* ADDED: Camp ID column to match Doctor page */}
+            <th onClick={() => handleSort('campId')} style={{ cursor: 'pointer' }}>ID{getSortIndicator('campId')}</th>
             <th onClick={() => handleSort('date')} style={{ cursor: 'pointer' }}>Date{getSortIndicator('date')}</th>
-            <th>Time</th>
-            <th onClick={() => handleSort('city')} style={{ cursor: 'pointer' }}>City{getSortIndicator('city')}</th>
+            {/* CHANGED: Split 'Time' into 'Start Time' and 'End Time' */}
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th onClick={() => handleSort('city')} style={{ cursor: 'pointer' }}>Location{getSortIndicator('city')}</th>
             <th>Address</th>
           </tr>
         </thead>
@@ -100,21 +105,28 @@ export default function PatientCampsPage() {
           {camps.length > 0 ? (
             camps.map(camp => (
               <tr key={camp.campId}>
+                {/* ADDED: Camp ID data */}
+                <td>{camp.campId}</td>
                 <td>{formatDate(camp.date)}</td>
-                <td>{formatDateTime(camp.startTime)} - {formatDateTime(camp.endTime)}</td>
+                {/* CHANGED: Split time data */}
+                <td>{formatDateTime(camp.startTime)}</td>
+                <td>{formatDateTime(camp.endTime)}</td>
                 <td>{camp.city || 'N/A'}, {camp.state || 'N/A'}</td>
+                {/* This line was already correct in your code */}
                 <td>{camp.addressDescription || 'N/A'} (PIN: {camp.pin || 'N/A'})</td>
                
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="text-center">No upcoming camps found.</td>
+              {/* CHANGED: colSpan is now 6 to match the new headers */}
+              <td colSpan="6" className="text-center">No upcoming camps found.</td>
             </tr>
           )}
         </tbody>
       </table>
 
+      {/* Pagination (no changes needed here) */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <p className="text-muted">
           Page <strong>{currentPage + 1}</strong> of <strong>{totalPages}</strong>
